@@ -1,0 +1,673 @@
+{
+  "summary": {
+    "total_clauses_compared": 5,
+    "matched_clauses": 5,
+    "modified_clauses": 2,
+    "unchanged_clauses": 3,
+    "blocked_or_unsupported_clauses": 0
+  },
+  "details": [
+    {
+      "source_chunk_id": "A_1",
+      "target_chunk_id": "B_1",
+      "source_clause_no": "1",
+      "target_clause_no": "1",
+      "section_title_a": "Thời hạn và công việc hợp đồng",
+      "section_title_b": "Thời hạn và công việc hợp đồng",
+      "alignment_status": "matched",
+      "final_alignment_score": 1.0,
+      "change_subtype": "time_change",
+      "citations_a": [],
+      "citations_b": [],
+      "content_a": "Điều 1: Thời hạn và công việc hợp đồng\n1.1. Loại hợp đồng lao động: Xác định thời hạn/hoặc không xác định thời hạn.\n1.2. Thời hạn từ ngày 1/ 4 / 2026 đến hết ngày 1 / 10 / 2026 (đối với HĐ có xác định thời hạn).\n1.3. Đơn vị làm việc: Công ty TNHH X\n1.4. Địa điểm làm việc: Thanh Xuân, Hà Nội\n1.5. Chức vụ/chức danh (nếu có): Developer\n1.6. Nội dung công việc/Mô tả công việc:\n(i) Thực hiện công việc theo sự sắp xếp của lãnh đạo Công ty và các trưởng, phó bộ phận;\n(ii) [Mô tả nội dung công việc ...]\n(iii) Người lao động đồng ý rằng Người sử dụng lao động có thể quyết định một cách hợp lý chức vụ của Người lao động và việc thuyên chuyển Người lao động trong các phòng ban của Công ty phù hợp với chuyên môn và năng lực của Người lao động.\n(ii) Hoàn thành tốt công việc được giao theo định mức sản lượng, thời gian công nghệ và đạt chất lượng theo quy định – chấp hành tốt nội quy kỷ luật, chấp hành nghiêm chỉnh quy trình vận hành, quy trình thao tác công nghệ, bảo quản thiết bị, quy trình an toàn lao động.",
+      "content_b": "Điều 1: Thời hạn và công việc hợp đồng\n1.1. Loại hợp đồng lao động: Xác định thời hạn/hoặc không xác định thời hạn.\n1.2. Thời hạn từ ngày 1/ 4 / 2026 đến hết ngày 1 / 10 / 2026 (đối với HĐ có xác định thời hạn).\n1.3. Đơn vị làm việc: Công ty TNHH X\n1.4. Địa điểm làm việc: Thanh Xuân, Hà Nội\n1.5. Chức vụ/chức danh (nếu có): Developer\n1.6. Nội dung công việc/Mô tả công việc:\n(i) Thực hiện công việc theo sự sắp xếp của lãnh đạo Công ty và các trưởng, phó bộ phận;\n(ii) [Mô tả nội dung công việc ...]\n(iii) Người lao động đồng ý rằng Người sử dụng lao động có thể quyết định một cách hợp lý chức vụ của Người lao động và việc thuyên chuyển Người lao động trong các phòng ban của Công ty phù hợp với chuyên môn và năng lực của Người lao động.\n(ii) Hoàn thành tốt công việc được giao theo định mức sản lượng, thời gian công nghệ và đạt chất lượng theo quy định – chấp hành tốt nội quy kỷ luật, chấp hành nghiêm chỉnh quy trình vận hành, quy trình thao tác công nghệ, bảo quản thiết bị, quy trình an toàn lao động.",
+      "unit_changes": [
+        {
+          "source_unit": "Điều 1: Thời hạn và công việc hợp đồng",
+          "target_unit": "Điều 1: Thời hạn và công việc hợp đồng",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "1.1.",
+          "target_unit": "1.1.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Loại hợp đồng lao động: Xác định thời hạn/hoặc không xác định thời hạn.",
+          "target_unit": "Loại hợp đồng lao động: Xác định thời hạn/hoặc không xác định thời hạn.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "1.2.",
+          "target_unit": "1.2.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thời hạn từ ngày 1/ 4 / 2026 đến hết ngày 1 / 10 / 2026 (đối với HĐ có xác định thời hạn).",
+          "target_unit": "Thời hạn từ ngày 1/ 4 / 2026 đến hết ngày 1 / 10 / 2026 (đối với HĐ có xác định thời hạn).",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "1.3.",
+          "target_unit": "1.3.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Đơn vị làm việc: Công ty TNHH X",
+          "target_unit": "Đơn vị làm việc: Công ty TNHH X",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "1.4.",
+          "target_unit": "1.4.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Địa điểm làm việc: Thanh Xuân, Hà Nội",
+          "target_unit": "Địa điểm làm việc: Thanh Xuân, Hà Nội",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "1.5.",
+          "target_unit": "1.5.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Chức vụ/chức danh (nếu có): Developer",
+          "target_unit": "Chức vụ/chức danh (nếu có): Developer",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "1.6.",
+          "target_unit": "1.6.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Nội dung công việc/Mô tả công việc:",
+          "target_unit": "Nội dung công việc/Mô tả công việc:",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thực hiện công việc theo sự sắp xếp của lãnh đạo Công ty và các trưởng, phó bộ phận;",
+          "target_unit": "Thực hiện công việc theo sự sắp xếp của lãnh đạo Công ty và các trưởng, phó bộ phận;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "[Mô tả nội dung công việc ...]",
+          "target_unit": "[Mô tả nội dung công việc ...]",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Người lao động đồng ý rằng Người sử dụng lao động có thể quyết định một cách hợp lý chức vụ của Người lao động và việc thuyên chuyển Người lao động trong các phòng ban của Công ty phù hợp với chuyên môn và năng lực của Người lao động.",
+          "target_unit": "Người lao động đồng ý rằng Người sử dụng lao động có thể quyết định một cách hợp lý chức vụ của Người lao động và việc thuyên chuyển Người lao động trong các phòng ban của Công ty phù hợp với chuyên môn và năng lực của Người lao động.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Hoàn thành tốt công việc được giao theo định mức sản lượng, thời gian công nghệ và đạt chất lượng theo quy định – chấp hành tốt nội quy kỷ luật, chấp hành nghiêm chỉnh quy trình vận hành, quy trình thao tác công nghệ, bảo quản thiết bị, quy trình an toàn lao động.",
+          "target_unit": "Hoàn thành tốt công việc được giao theo định mức sản lượng, thời gian công nghệ và đạt chất lượng theo quy định – chấp hành tốt nội quy kỷ luật, chấp hành nghiêm chỉnh quy trình vận hành, quy trình thao tác công nghệ, bảo quản thiết bị, quy trình an toàn lao động.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        }
+      ],
+      "clause_change_type": "unchanged",
+      "supported": true,
+      "guardrail_status": "supported_unchanged",
+      "summary_seed": "Điều 1 hầu như không có thay đổi đáng kể giữa phiên bản A và B.",
+      "summary": "Điều 1 hầu như không có thay đổi đáng kể giữa phiên bản A và B.",
+      "importance": "high",
+      "summary_source": "rule_based"
+    },
+    {
+      "source_chunk_id": "A_2",
+      "target_chunk_id": "B_2",
+      "source_clause_no": "2",
+      "target_clause_no": "2",
+      "section_title_a": "Chế độ làm việc",
+      "section_title_b": "Chế độ làm việc",
+      "alignment_status": "matched",
+      "final_alignment_score": 0.999041,
+      "change_subtype": "numeric_change",
+      "citations_a": [
+        "Ngày làm việc: từ ngày thứ 2 đến hết buổi sáng ngày thứ 7."
+      ],
+      "citations_b": [
+        "Ngày làm việc: từ ngày thứ 2 đến hết buổi chiều ngày thứ 6."
+      ],
+      "content_a": "Điều 2: Chế độ làm việc.\n2.1. Thời giờ làm việc: 8 tiếng/ngày, Buổi sáng : 8h00 – 12h00, Buổi chiều: 13h30 – 17h30; Ngày làm việc: từ ngày thứ 2 đến hết buổi sáng ngày thứ 7.\n2.2. Do tính chất công việc, yêu cầu của tổ chức/bộ phận hoặc yêu cầu của khách hàng, Công ty có thể cho áp dụng thời gian làm việc linh hoạt. Những nhân viên được áp dụng thời gian làm việc linh hoạt có thể không tuân thủ lịch làm việc cố định bình thường mà làm theo thời gian cụ thể của công việc, nhưng vẫn phải đảm bảo đủ số giờ làm việc theo quy định.\n2.3. Thiết bị và công cụ làm việc có thể được Công ty cấp phát (nếu cần thiết) tùy theo nhu cầu của công việc.\n2.4. Điều kiện an toàn và vệ sinh lao động tại nơi làm việc theo quy định của pháp luật hiện hành.\n2.5. Ngày nghỉ lễ, Tết, ngày nghỉ hưởng nguyên lương: Theo quy định của luật lao động và theo quy chế lương của Công ty.",
+      "content_b": "Điều 2: Chế độ làm việc.\n2.1. Thời giờ làm việc: 8 tiếng/ngày, Buổi sáng : 8h00 – 12h00, Buổi chiều: 13h00 – 17h00; Ngày làm việc: từ ngày thứ 2 đến hết buổi chiều ngày thứ 6.\n2.2. Do tính chất công việc, yêu cầu của tổ chức/bộ phận hoặc yêu cầu của khách hàng, Công ty có thể cho áp dụng thời gian làm việc linh hoạt. Những nhân viên được áp dụng thời gian làm việc linh hoạt có thể không tuân thủ lịch làm việc cố định bình thường mà làm theo thời gian cụ thể của công việc, nhưng vẫn phải đảm bảo đủ số giờ làm việc theo quy định.\n2.3. Thiết bị và công cụ làm việc có thể được Công ty cấp phát (nếu cần thiết) tùy theo nhu cầu của công việc.\n2.4. Điều kiện an toàn và vệ sinh lao động tại nơi làm việc theo quy định của pháp luật hiện hành.\n2.5. Ngày nghỉ lễ, Tết, ngày nghỉ hưởng nguyên lương: Theo quy định của luật lao động và theo quy chế lương của Công ty.",
+      "unit_changes": [
+        {
+          "source_unit": "Điều 2: Chế độ làm việc.",
+          "target_unit": "Điều 2: Chế độ làm việc.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "2.1.",
+          "target_unit": "2.1.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thời giờ làm việc: 8 tiếng/ngày, Buổi sáng : 8h00 – 12h00, Buổi chiều: 13h30 – 17h30;",
+          "target_unit": "Thời giờ làm việc: 8 tiếng/ngày, Buổi sáng : 8h00 – 12h00, Buổi chiều: 13h00 – 17h00;",
+          "similarity": 0.9765,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Ngày làm việc: từ ngày thứ 2 đến hết buổi sáng ngày thứ 7.",
+          "target_unit": "Ngày làm việc: từ ngày thứ 2 đến hết buổi chiều ngày thứ 6.",
+          "similarity": 0.906,
+          "change_type": "modified"
+        },
+        {
+          "source_unit": "2.2.",
+          "target_unit": "2.2.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Do tính chất công việc, yêu cầu của tổ chức/bộ phận hoặc yêu cầu của khách hàng, Công ty có thể cho áp dụng thời gian làm việc linh hoạt.",
+          "target_unit": "Do tính chất công việc, yêu cầu của tổ chức/bộ phận hoặc yêu cầu của khách hàng, Công ty có thể cho áp dụng thời gian làm việc linh hoạt.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Những nhân viên được áp dụng thời gian làm việc linh hoạt có thể không tuân thủ lịch làm việc cố định bình thường mà làm theo thời gian cụ thể của công việc, nhưng vẫn phải đảm bảo đủ số giờ làm việc theo quy định.",
+          "target_unit": "Những nhân viên được áp dụng thời gian làm việc linh hoạt có thể không tuân thủ lịch làm việc cố định bình thường mà làm theo thời gian cụ thể của công việc, nhưng vẫn phải đảm bảo đủ số giờ làm việc theo quy định.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "2.3.",
+          "target_unit": "2.3.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thiết bị và công cụ làm việc có thể được Công ty cấp phát (nếu cần thiết) tùy theo nhu cầu của công việc.",
+          "target_unit": "Thiết bị và công cụ làm việc có thể được Công ty cấp phát (nếu cần thiết) tùy theo nhu cầu của công việc.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "2.4.",
+          "target_unit": "2.4.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Điều kiện an toàn và vệ sinh lao động tại nơi làm việc theo quy định của pháp luật hiện hành.",
+          "target_unit": "Điều kiện an toàn và vệ sinh lao động tại nơi làm việc theo quy định của pháp luật hiện hành.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "2.5.",
+          "target_unit": "2.5.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Ngày nghỉ lễ, Tết, ngày nghỉ hưởng nguyên lương: Theo quy định của luật lao động và theo quy chế lương của Công ty.",
+          "target_unit": "Ngày nghỉ lễ, Tết, ngày nghỉ hưởng nguyên lương: Theo quy định của luật lao động và theo quy chế lương của Công ty.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        }
+      ],
+      "clause_change_type": "modified",
+      "supported": true,
+      "guardrail_status": "supported_modified",
+      "summary_seed": "Điều 2 có thay đổi nội dung giữa phiên bản A và B.",
+      "summary": "Điều 2 có thay đổi nội dung giữa phiên bản A và B.",
+      "importance": "high",
+      "summary_source": "rule_based"
+    },
+    {
+      "source_chunk_id": "A_3",
+      "target_chunk_id": "B_3",
+      "source_clause_no": "3",
+      "target_clause_no": "3",
+      "section_title_a": "Quyền lợi và nghĩa vụ của Người lao động",
+      "section_title_b": "Quyền lợi và nghĩa vụ của Người lao động",
+      "alignment_status": "matched",
+      "final_alignment_score": 0.996641,
+      "change_subtype": "numeric_change",
+      "citations_a": [
+        "Các khoản phụ cấp: Theo quy định của Công ty;"
+      ],
+      "citations_b": [
+        "Các khoản phụ cấp: Happy Hour, Tiền xăng xe theo quy định của Công ty"
+      ],
+      "content_a": "Điều 3: Quyền lợi và nghĩa vụ của Người lao động\n3.1. Quyền lợi\n(i) Phương tiện đi lại làm việc: Người lao động tự túc.\n(ii) Mức lương: 8 000 000 VNĐ\n(iii) Các khoản phụ cấp: Theo quy định của Công ty;\n(iv) Chế độ nâng lương: Theo quy định của pháp luật và Quy chế tiền lương của Công ty;\n(v) Thưởng: Do Công ty quyết định tùy theo hiệu quả công việc và tình hình kinh doanh của Công ty;\n(vi) Chế độ nghỉ ngơi (nghỉ hàng tuần, phép năm, lễ tết...): Theo Nội quy lao động của Công ty và quy định của pháp luật hiện hành;\n(vii) Chế độ Bảo hiểm: Theo quy định của pháp luật hiện hành.;\n(viii) Chế độ đào tạo : Theo quy định của Công ty;\n(ix) Tiền lương làm thêm giờ: được tính theo quy định của Công ty hoặc theo quy đinh chung của Nhà nước;\n(x) Được trang bị bảo hộ lao động gồm: Theo quy định của Công ty (nếu có).\n3.2. Nghĩa vụ\n(i) Hoàn thành những công việc theo Hợp đồng lao động này. Tuân thủ sự phân công, bố trí, sắp xếp, điều hành, điều động, điều chuyển, phân cấp, ủy quyền của cán bộ quản lý trực tiếp, và/hoặc Ban điều hành Công ty (nếu có);\n(ii) Chấp hành lệnh điều hành sản xuất kinh doanh, nội quy kỷ luật lao động, an toàn lao động và các quy định khác do Người sử dụng lao động ban hành tại từng thời điểm;\n(iii) Giữ bí mật các thông tin được tiếp cận trong quá trình làm việc theo quy định tại Thỏa thuận bảo mật thông tin đính kèm Hợp đồng này;\n(iv) Giữ gìn, bảo vệ tài sản của công ty, báo cáo kịp thời cho người có thẩm quyền khi phát hiện hành vi hủy hoại, trộm cắp hoặc chiếm dụng tài sản của Công ty;\n(v) Kỷ luật lao động và trách nhiệm vật chất: Người sử dụng lao động có quyền xử lý kỷ luật và yêu cầu trách nhiệm vật chất theo quy định của Nội quy lao động và pháp luật lao động;\n(vi) Trường hợp Người lao động đơn phương chấm dứt Hợp đồng lao động này phải báo trước bằng văn bản (Đơn xin nghỉ việc) cho Người sử dụng lao động, tuân thủ thời hạn báo trước theo quy định pháp luật. Người lao động có trách nhiệm bàn giao giấy tờ, văn bản, công việc cho người kế nhiệm hoặc người quản lý; có trách nhiệm cùng Người sử dụng lao động giải quyết các vấn đề vướng mắc trong quá trình chờ giải quyết chế độ nghỉ việc (nếu có);\n(vii) Khi đơn phương chấm dứt hợp động trái pháp luật, người lao động không được trợ cấp thôi việc và phải bồi thường cho người sử dụng lao động nửa tháng tiền lương theo hợp đồng lao động. Nếu vi phạm về thời hạn báo trước, thì phải bồi thường cho người sử dụng lao động một khoản tiền tương ứng với tiền lương của người lao động trong những ngày không báo trước;\n(viii) Tham dự đầy đủ, nhiệt tình các buổi huấn luyện, đào tạo, hội thảo do Bộ phận hoặc Công ty tổ chức;\n(ix) Hoàn trả toàn bộ chi phí đào tạo theo Hợp đồng đào tạo (nếu có ký kết) cho Người sử dụng lao động khi đơn phương chấm dứt hợp động trái pháp luật; hoặc trường hợp Người lao động vi phạm bất kỳ điều khoản nào của Hợp đồng, Nội quy lao động, hướng dẫn, chính sách và/hoặc quy tắc của Công ty (đã được sửa đổi theo thời gian) dẫn đến việc Người lao động bị kỷ luật sa thải trong thời gian làm việc cho Người sử dụng lao động;\n(x) Thực hiện công việc với sự tận tâm, tận lực và mẫn cán, đảm bảo hoàn thành công việc với hiệu quả cao nhất theo sự phân công, điều hành (bằng văn bản hoặc bằng miệng) của Ban Giám đốc trong Công ty (và các cá nhân được Ban Giám đốc bổ nhiệm hoặc ủy quyền phụ trách);\n(xi) Thực hiện các nghĩa vụ về thuế; bảo hiểm xã hội và nghĩa vụ tài chính khác theo quy định pháp luật.",
+      "content_b": "Điều 3: Quyền lợi và nghĩa vụ của Người lao động\n3.1. Quyền lợi\n(i) Phương tiện đi lại làm việc: Người lao động tự túc.\n(ii) Mức lương: 7 000 000 VNĐ\n(iii) Các khoản phụ cấp: Happy Hour, Tiền xăng xe theo quy định của Công ty\n(iv) Chế độ nâng lương: Theo quy định của pháp luật và Quy chế tiền lương của Công ty;\n(v) Thưởng: Do Công ty quyết định tùy theo hiệu quả công việc và tình hình kinh doanh của Công ty;\n(vi) Chế độ nghỉ ngơi (nghỉ hàng tuần, phép năm, lễ tết...): Theo Nội quy lao động của Công ty và quy định của pháp luật hiện hành;\n(vii) Chế độ Bảo hiểm: Theo quy định của pháp luật hiện hành.;\n(viii) Chế độ đào tạo : Theo quy định của Công ty;\n(ix) Tiền lương làm thêm giờ: được tính theo quy định của Công ty hoặc theo quy đinh chung của Nhà nước;\n(x) Được trang bị bảo hộ lao động gồm: Theo quy định của Công ty (nếu có).\n3.2. Nghĩa vụ\n(i) Hoàn thành những công việc theo Hợp đồng lao động này. Tuân thủ sự phân công, bố trí, sắp xếp, điều hành, điều động, điều chuyển, phân cấp, ủy quyền của cán bộ quản lý trực tiếp, và/hoặc Ban điều hành Công ty (nếu có);\n(ii) Chấp hành lệnh điều hành sản xuất kinh doanh, nội quy kỷ luật lao động, an toàn lao động và các quy định khác do Người sử dụng lao động ban hành tại từng thời điểm;\n(iii) Giữ bí mật các thông tin được tiếp cận trong quá trình làm việc theo quy định tại Thỏa thuận bảo mật thông tin đính kèm Hợp đồng này;\n(iv) Giữ gìn, bảo vệ tài sản của công ty, báo cáo kịp thời cho người có thẩm quyền khi phát hiện hành vi hủy hoại, trộm cắp hoặc chiếm dụng tài sản của Công ty;\n(v) Kỷ luật lao động và trách nhiệm vật chất: Người sử dụng lao động có quyền xử lý kỷ luật và yêu cầu trách nhiệm vật chất theo quy định của Nội quy lao động và pháp luật lao động;\n(vi) Trường hợp Người lao động đơn phương chấm dứt Hợp đồng lao động này phải báo trước bằng văn bản (Đơn xin nghỉ việc) cho Người sử dụng lao động, tuân thủ thời hạn báo trước theo quy định pháp luật. Người lao động có trách nhiệm bàn giao giấy tờ, văn bản, công việc cho người kế nhiệm hoặc người quản lý; có trách nhiệm cùng Người sử dụng lao động giải quyết các vấn đề vướng mắc trong quá trình chờ giải quyết chế độ nghỉ việc (nếu có);\n(vii) Khi đơn phương chấm dứt hợp động trái pháp luật, người lao động không được trợ cấp thôi việc và phải bồi thường cho người sử dụng lao động nửa tháng tiền lương theo hợp đồng lao động. Nếu vi phạm về thời hạn báo trước, thì phải bồi thường cho người sử dụng lao động một khoản tiền tương ứng với tiền lương của người lao động trong những ngày không báo trước;\n(viii) Tham dự đầy đủ, nhiệt tình các buổi huấn luyện, đào tạo, hội thảo do Bộ phận hoặc Công ty tổ chức;\n(ix) Hoàn trả toàn bộ chi phí đào tạo theo Hợp đồng đào tạo (nếu có ký kết) cho Người sử dụng lao động khi đơn phương chấm dứt hợp động trái pháp luật; hoặc trường hợp Người lao động vi phạm bất kỳ điều khoản nào của Hợp đồng, Nội quy lao động, hướng dẫn, chính sách và/hoặc quy tắc của Công ty (đã được sửa đổi theo thời gian) dẫn đến việc Người lao động bị kỷ luật sa thải trong thời gian làm việc cho Người sử dụng lao động;\n(x) Thực hiện công việc với sự tận tâm, tận lực và mẫn cán, đảm bảo hoàn thành công việc với hiệu quả cao nhất theo sự phân công, điều hành (bằng văn bản hoặc bằng miệng) của Ban Giám đốc trong Công ty (và các cá nhân được Ban Giám đốc bổ nhiệm hoặc ủy quyền phụ trách);\n(xi) Thực hiện các nghĩa vụ về thuế; bảo hiểm xã hội và nghĩa vụ tài chính khác theo quy định pháp luật.",
+      "unit_changes": [
+        {
+          "source_unit": "Điều 3: Quyền lợi và nghĩa vụ của Người lao động",
+          "target_unit": "Điều 3: Quyền lợi và nghĩa vụ của Người lao động",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "3.1.",
+          "target_unit": "3.1.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Quyền lợi",
+          "target_unit": "Quyền lợi",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Phương tiện đi lại làm việc: Người lao động tự túc.",
+          "target_unit": "Phương tiện đi lại làm việc: Người lao động tự túc.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Mức lương: 8 000 000 VNĐ",
+          "target_unit": "Mức lương: 7 000 000 VNĐ",
+          "similarity": 0.9583,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Các khoản phụ cấp: Theo quy định của Công ty;",
+          "target_unit": "Các khoản phụ cấp: Happy Hour, Tiền xăng xe theo quy định của Công ty",
+          "similarity": 0.7719,
+          "change_type": "modified"
+        },
+        {
+          "source_unit": "Chế độ nâng lương: Theo quy định của pháp luật và Quy chế tiền lương của Công ty;",
+          "target_unit": "Chế độ nâng lương: Theo quy định của pháp luật và Quy chế tiền lương của Công ty;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thưởng: Do Công ty quyết định tùy theo hiệu quả công việc và tình hình kinh doanh của Công ty;",
+          "target_unit": "Thưởng: Do Công ty quyết định tùy theo hiệu quả công việc và tình hình kinh doanh của Công ty;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Chế độ nghỉ ngơi (nghỉ hàng tuần, phép năm, lễ tết...): Theo Nội quy lao động của Công ty và quy định của pháp luật hiện hành;",
+          "target_unit": "Chế độ nghỉ ngơi (nghỉ hàng tuần, phép năm, lễ tết...): Theo Nội quy lao động của Công ty và quy định của pháp luật hiện hành;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Chế độ Bảo hiểm: Theo quy định của pháp luật hiện hành.;",
+          "target_unit": "Chế độ Bảo hiểm: Theo quy định của pháp luật hiện hành.;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Chế độ đào tạo : Theo quy định của Công ty;",
+          "target_unit": "Chế độ đào tạo : Theo quy định của Công ty;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Tiền lương làm thêm giờ: được tính theo quy định của Công ty hoặc theo quy đinh chung của Nhà nước;",
+          "target_unit": "Tiền lương làm thêm giờ: được tính theo quy định của Công ty hoặc theo quy đinh chung của Nhà nước;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Được trang bị bảo hộ lao động gồm: Theo quy định của Công ty (nếu có).",
+          "target_unit": "Được trang bị bảo hộ lao động gồm: Theo quy định của Công ty (nếu có).",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "3.2.",
+          "target_unit": "3.2.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Nghĩa vụ",
+          "target_unit": "Nghĩa vụ",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Hoàn thành những công việc theo Hợp đồng lao động này.",
+          "target_unit": "Hoàn thành những công việc theo Hợp đồng lao động này.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Tuân thủ sự phân công, bố trí, sắp xếp, điều hành, điều động, điều chuyển, phân cấp, ủy quyền của cán bộ quản lý trực tiếp, và/hoặc Ban điều hành Công ty (nếu có);",
+          "target_unit": "Tuân thủ sự phân công, bố trí, sắp xếp, điều hành, điều động, điều chuyển, phân cấp, ủy quyền của cán bộ quản lý trực tiếp, và/hoặc Ban điều hành Công ty (nếu có);",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Chấp hành lệnh điều hành sản xuất kinh doanh, nội quy kỷ luật lao động, an toàn lao động và các quy định khác do Người sử dụng lao động ban hành tại từng thời điểm;",
+          "target_unit": "Chấp hành lệnh điều hành sản xuất kinh doanh, nội quy kỷ luật lao động, an toàn lao động và các quy định khác do Người sử dụng lao động ban hành tại từng thời điểm;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Giữ bí mật các thông tin được tiếp cận trong quá trình làm việc theo quy định tại Thỏa thuận bảo mật thông tin đính kèm Hợp đồng này;",
+          "target_unit": "Giữ bí mật các thông tin được tiếp cận trong quá trình làm việc theo quy định tại Thỏa thuận bảo mật thông tin đính kèm Hợp đồng này;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Giữ gìn, bảo vệ tài sản của công ty, báo cáo kịp thời cho người có thẩm quyền khi phát hiện hành vi hủy hoại, trộm cắp hoặc chiếm dụng tài sản của Công ty;",
+          "target_unit": "Giữ gìn, bảo vệ tài sản của công ty, báo cáo kịp thời cho người có thẩm quyền khi phát hiện hành vi hủy hoại, trộm cắp hoặc chiếm dụng tài sản của Công ty;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Kỷ luật lao động và trách nhiệm vật chất: Người sử dụng lao động có quyền xử lý kỷ luật và yêu cầu trách nhiệm vật chất theo quy định của Nội quy lao động và pháp luật lao động;",
+          "target_unit": "Kỷ luật lao động và trách nhiệm vật chất: Người sử dụng lao động có quyền xử lý kỷ luật và yêu cầu trách nhiệm vật chất theo quy định của Nội quy lao động và pháp luật lao động;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Trường hợp Người lao động đơn phương chấm dứt Hợp đồng lao động này phải báo trước bằng văn bản (Đơn xin nghỉ việc) cho Người sử dụng lao động, tuân thủ thời hạn báo trước theo quy định pháp luật.",
+          "target_unit": "Trường hợp Người lao động đơn phương chấm dứt Hợp đồng lao động này phải báo trước bằng văn bản (Đơn xin nghỉ việc) cho Người sử dụng lao động, tuân thủ thời hạn báo trước theo quy định pháp luật.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Người lao động có trách nhiệm bàn giao giấy tờ, văn bản, công việc cho người kế nhiệm hoặc người quản lý;",
+          "target_unit": "Người lao động có trách nhiệm bàn giao giấy tờ, văn bản, công việc cho người kế nhiệm hoặc người quản lý;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "có trách nhiệm cùng Người sử dụng lao động giải quyết các vấn đề vướng mắc trong quá trình chờ giải quyết chế độ nghỉ việc (nếu có);",
+          "target_unit": "có trách nhiệm cùng Người sử dụng lao động giải quyết các vấn đề vướng mắc trong quá trình chờ giải quyết chế độ nghỉ việc (nếu có);",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Khi đơn phương chấm dứt hợp động trái pháp luật, người lao động không được trợ cấp thôi việc và phải bồi thường cho người sử dụng lao động nửa tháng tiền lương theo hợp đồng lao động.",
+          "target_unit": "Khi đơn phương chấm dứt hợp động trái pháp luật, người lao động không được trợ cấp thôi việc và phải bồi thường cho người sử dụng lao động nửa tháng tiền lương theo hợp đồng lao động.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Nếu vi phạm về thời hạn báo trước, thì phải bồi thường cho người sử dụng lao động một khoản tiền tương ứng với tiền lương của người lao động trong những ngày không báo trước;",
+          "target_unit": "Nếu vi phạm về thời hạn báo trước, thì phải bồi thường cho người sử dụng lao động một khoản tiền tương ứng với tiền lương của người lao động trong những ngày không báo trước;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Tham dự đầy đủ, nhiệt tình các buổi huấn luyện, đào tạo, hội thảo do Bộ phận hoặc Công ty tổ chức;",
+          "target_unit": "Tham dự đầy đủ, nhiệt tình các buổi huấn luyện, đào tạo, hội thảo do Bộ phận hoặc Công ty tổ chức;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Hoàn trả toàn bộ chi phí đào tạo theo Hợp đồng đào tạo (nếu có ký kết) cho Người sử dụng lao động khi đơn phương chấm dứt hợp động trái pháp luật;",
+          "target_unit": "Hoàn trả toàn bộ chi phí đào tạo theo Hợp đồng đào tạo (nếu có ký kết) cho Người sử dụng lao động khi đơn phương chấm dứt hợp động trái pháp luật;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "hoặc trường hợp Người lao động vi phạm bất kỳ điều khoản nào của Hợp đồng, Nội quy lao động, hướng dẫn, chính sách và/hoặc quy tắc của Công ty (đã được sửa đổi theo thời gian) dẫn đến việc Người lao động bị kỷ luật sa thải trong thời gian làm việc cho Người sử dụng lao động;",
+          "target_unit": "hoặc trường hợp Người lao động vi phạm bất kỳ điều khoản nào của Hợp đồng, Nội quy lao động, hướng dẫn, chính sách và/hoặc quy tắc của Công ty (đã được sửa đổi theo thời gian) dẫn đến việc Người lao động bị kỷ luật sa thải trong thời gian làm việc cho Người sử dụng lao động;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thực hiện công việc với sự tận tâm, tận lực và mẫn cán, đảm bảo hoàn thành công việc với hiệu quả cao nhất theo sự phân công, điều hành (bằng văn bản hoặc bằng miệng) của Ban Giám đốc trong Công ty (và các cá nhân được Ban Giám đốc bổ nhiệm hoặc ủy quyền phụ trách);",
+          "target_unit": "Thực hiện công việc với sự tận tâm, tận lực và mẫn cán, đảm bảo hoàn thành công việc với hiệu quả cao nhất theo sự phân công, điều hành (bằng văn bản hoặc bằng miệng) của Ban Giám đốc trong Công ty (và các cá nhân được Ban Giám đốc bổ nhiệm hoặc ủy quyền phụ trách);",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thực hiện các nghĩa vụ về thuế;",
+          "target_unit": "Thực hiện các nghĩa vụ về thuế;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "bảo hiểm xã hội và nghĩa vụ tài chính khác theo quy định pháp luật.",
+          "target_unit": "bảo hiểm xã hội và nghĩa vụ tài chính khác theo quy định pháp luật.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        }
+      ],
+      "clause_change_type": "modified",
+      "supported": true,
+      "guardrail_status": "supported_modified",
+      "summary_seed": "Điều 3 có thay đổi nội dung giữa phiên bản A và B.",
+      "summary": "Điều 3 có thay đổi nội dung giữa phiên bản A và B.",
+      "importance": "high",
+      "summary_source": "rule_based"
+    },
+    {
+      "source_chunk_id": "A_4",
+      "target_chunk_id": "B_4",
+      "source_clause_no": "4",
+      "target_clause_no": "4",
+      "section_title_a": "Quyền hạn và nghĩa vụ của Người sử dụng lao động",
+      "section_title_b": "Quyền hạn và nghĩa vụ của Người sử dụng lao động",
+      "alignment_status": "matched",
+      "final_alignment_score": 1.0,
+      "change_subtype": "numeric_change",
+      "citations_a": [],
+      "citations_b": [],
+      "content_a": "Điều 4: Quyền hạn và nghĩa vụ của Người sử dụng lao động\n4.1. Quyền hạn\n(i) Điều động người lao động hoàn thành công việc theo hợp đồng (bố trí, điều chuyển, tạm ngừng việc …);\n(ii) Kiểm tra, giám sát, đánh giá hiệu quả thực hiện công việc của Người lao động phù hợp với từng vị trí làm việc và quyết định việc tăng lương theo tình hình sản xuất, kinh doanh thực tế của Công ty trên cơ sở quy định của pháp luật, nội quy lao động;\n(iii) Có quyền áp dụng các hình thức xử lý kỷ luật lao động, yêu cầu bồi thường thiệt hại đối với Người lao động theo quy chế công ty và phù hợp quy định pháp luật;\n(iv) Thực hiện các hành động, biện pháp nhằm ngăn chặn, hạn chế tối thiểu những rủi ro, thiệt hại từ các hành vi cố ý hủy hoại của Người lao động đến quyền lợi chính đáng của (v) Người sử dụng lao động trong phạm vi quyền hạn và quy định pháp luật;\n(vi) Cung cấp đầy đủ điều kiện làm việc cho người lao động phù hợp với vị trí công việc được giao;\n(vii) Tạm hoãn, chấm dứt hợp đồng lao động, kỷ luật người lao động theo quy định của pháp luật, thỏa ước lao động tập thể (nếu có) và nội quy lao động của doanh nghiệp.\n4.2. Nghĩa vụ\n(i) Bảo đảm việc làm và thực hiện đầy đủ những điều đã cam kết trong hợp đồng lao động;\n(ii) Thanh toán đầy đủ, đúng thời hạn các chế độ và quyền lợi cho người lao động theo hợp đồng lao động, thỏa ước lao động tập thể (nếu có).",
+      "content_b": "Điều 4: Quyền hạn và nghĩa vụ của Người sử dụng lao động\n4.1. Quyền hạn\n(i) Điều động người lao động hoàn thành công việc theo hợp đồng (bố trí, điều chuyển, tạm ngừng việc …);\n(ii) Kiểm tra, giám sát, đánh giá hiệu quả thực hiện công việc của Người lao động phù hợp với từng vị trí làm việc và quyết định việc tăng lương theo tình hình sản xuất, kinh doanh thực tế của Công ty trên cơ sở quy định của pháp luật, nội quy lao động;\n(iii) Có quyền áp dụng các hình thức xử lý kỷ luật lao động, yêu cầu bồi thường thiệt hại đối với Người lao động theo quy chế công ty và phù hợp quy định pháp luật;\n(iv) Thực hiện các hành động, biện pháp nhằm ngăn chặn, hạn chế tối thiểu những rủi ro, thiệt hại từ các hành vi cố ý hủy hoại của Người lao động đến quyền lợi chính đáng của (v) Người sử dụng lao động trong phạm vi quyền hạn và quy định pháp luật;\n(vi) Cung cấp đầy đủ điều kiện làm việc cho người lao động phù hợp với vị trí công việc được giao;\n(vii) Tạm hoãn, chấm dứt hợp đồng lao động, kỷ luật người lao động theo quy định của pháp luật, thỏa ước lao động tập thể (nếu có) và nội quy lao động của doanh nghiệp.\n4.2. Nghĩa vụ\n(i) Bảo đảm việc làm và thực hiện đầy đủ những điều đã cam kết trong hợp đồng lao động;\n(ii) Thanh toán đầy đủ, đúng thời hạn các chế độ và quyền lợi cho người lao động theo hợp đồng lao động, thỏa ước lao động tập thể (nếu có).",
+      "unit_changes": [
+        {
+          "source_unit": "Điều 4: Quyền hạn và nghĩa vụ của Người sử dụng lao động",
+          "target_unit": "Điều 4: Quyền hạn và nghĩa vụ của Người sử dụng lao động",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "4.1.",
+          "target_unit": "4.1.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Quyền hạn",
+          "target_unit": "Quyền hạn",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Điều động người lao động hoàn thành công việc theo hợp đồng (bố trí, điều chuyển, tạm ngừng việc …);",
+          "target_unit": "Điều động người lao động hoàn thành công việc theo hợp đồng (bố trí, điều chuyển, tạm ngừng việc …);",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Kiểm tra, giám sát, đánh giá hiệu quả thực hiện công việc của Người lao động phù hợp với từng vị trí làm việc và quyết định việc tăng lương theo tình hình sản xuất, kinh doanh thực tế của Công ty trên cơ sở quy định của pháp luật, nội quy lao động;",
+          "target_unit": "Kiểm tra, giám sát, đánh giá hiệu quả thực hiện công việc của Người lao động phù hợp với từng vị trí làm việc và quyết định việc tăng lương theo tình hình sản xuất, kinh doanh thực tế của Công ty trên cơ sở quy định của pháp luật, nội quy lao động;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Có quyền áp dụng các hình thức xử lý kỷ luật lao động, yêu cầu bồi thường thiệt hại đối với Người lao động theo quy chế công ty và phù hợp quy định pháp luật;",
+          "target_unit": "Có quyền áp dụng các hình thức xử lý kỷ luật lao động, yêu cầu bồi thường thiệt hại đối với Người lao động theo quy chế công ty và phù hợp quy định pháp luật;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thực hiện các hành động, biện pháp nhằm ngăn chặn, hạn chế tối thiểu những rủi ro, thiệt hại từ các hành vi cố ý hủy hoại của Người lao động đến quyền lợi chính đáng của",
+          "target_unit": "Thực hiện các hành động, biện pháp nhằm ngăn chặn, hạn chế tối thiểu những rủi ro, thiệt hại từ các hành vi cố ý hủy hoại của Người lao động đến quyền lợi chính đáng của",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Người sử dụng lao động trong phạm vi quyền hạn và quy định pháp luật;",
+          "target_unit": "Người sử dụng lao động trong phạm vi quyền hạn và quy định pháp luật;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Cung cấp đầy đủ điều kiện làm việc cho người lao động phù hợp với vị trí công việc được giao;",
+          "target_unit": "Cung cấp đầy đủ điều kiện làm việc cho người lao động phù hợp với vị trí công việc được giao;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Tạm hoãn, chấm dứt hợp đồng lao động, kỷ luật người lao động theo quy định của pháp luật, thỏa ước lao động tập thể (nếu có) và nội quy lao động của doanh nghiệp.",
+          "target_unit": "Tạm hoãn, chấm dứt hợp đồng lao động, kỷ luật người lao động theo quy định của pháp luật, thỏa ước lao động tập thể (nếu có) và nội quy lao động của doanh nghiệp.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "4.2.",
+          "target_unit": "4.2.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Nghĩa vụ",
+          "target_unit": "Nghĩa vụ",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Bảo đảm việc làm và thực hiện đầy đủ những điều đã cam kết trong hợp đồng lao động;",
+          "target_unit": "Bảo đảm việc làm và thực hiện đầy đủ những điều đã cam kết trong hợp đồng lao động;",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thanh toán đầy đủ, đúng thời hạn các chế độ và quyền lợi cho người lao động theo hợp đồng lao động, thỏa ước lao động tập thể (nếu có).",
+          "target_unit": "Thanh toán đầy đủ, đúng thời hạn các chế độ và quyền lợi cho người lao động theo hợp đồng lao động, thỏa ước lao động tập thể (nếu có).",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        }
+      ],
+      "clause_change_type": "unchanged",
+      "supported": true,
+      "guardrail_status": "supported_unchanged",
+      "summary_seed": "Điều 4 hầu như không có thay đổi đáng kể giữa phiên bản A và B.",
+      "summary": "Điều 4 hầu như không có thay đổi đáng kể giữa phiên bản A và B.",
+      "importance": "high",
+      "summary_source": "rule_based"
+    },
+    {
+      "source_chunk_id": "A_5",
+      "target_chunk_id": "B_5",
+      "source_clause_no": "5",
+      "target_clause_no": "5",
+      "section_title_a": "Điều khoản thi hành",
+      "section_title_b": "Điều khoản thi hành",
+      "alignment_status": "matched",
+      "final_alignment_score": 1.0,
+      "change_subtype": "time_change",
+      "citations_a": [],
+      "citations_b": [],
+      "content_a": "Điều 5: Điều khoản thi hành\n5.1. Hai Bên cam kết hoàn toàn tự nguyện khi ký kết và thực hiện nghiêm túc Hợp đồng lao động này. Mọi sự thay đổi, bổ sung chỉ có giá trị khi được sự đồng ý bằng văn bản của cả hai Bên.\n5.2. Những vấn đề về lao động không ghi trong hợp đồng lao động này thì áp dụng quy định của Nội quy lao động, thỏa ước lao động tập thể, trường hợp thỏa ước lao động tập thể, nội quy lao động chưa có quy định thì áp dụng quy định của pháp luật lao động.\n5.3. Thỏa thuận bảo mật và các phụ lục hợp đồng, (nếu có) là một bộ phận không thể tách rời của Hợp đồng này, có giá trị pháp lý ràng buộc các Bên liên quan.\n5.4. Mọi tranh chấp phát sinh từ Hợp đồng này được giải quyết trên cơ sở thương lượng, thỏa thuận giữa hai bên. Trong trường hợp không thể thương lượng, thỏa thuận, các Bên có quyền yêu cầu Tòa án có thẩm quyền giải quyết theo quy định của pháp luật.\n5.5. Hợp đồng này được lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ một bản và có hiệu lực từ ngày ký.",
+      "content_b": "Điều 5: Điều khoản thi hành\n5.1. Hai Bên cam kết hoàn toàn tự nguyện khi ký kết và thực hiện nghiêm túc Hợp đồng lao động này. Mọi sự thay đổi, bổ sung chỉ có giá trị khi được sự đồng ý bằng văn bản của cả hai Bên.\n5.2. Những vấn đề về lao động không ghi trong hợp đồng lao động này thì áp dụng quy định của Nội quy lao động, thỏa ước lao động tập thể, trường hợp thỏa ước lao động tập thể, nội quy lao động chưa có quy định thì áp dụng quy định của pháp luật lao động.\n5.3. Thỏa thuận bảo mật và các phụ lục hợp đồng, (nếu có) là một bộ phận không thể tách rời của Hợp đồng này, có giá trị pháp lý ràng buộc các Bên liên quan.\n5.4. Mọi tranh chấp phát sinh từ Hợp đồng này được giải quyết trên cơ sở thương lượng, thỏa thuận giữa hai bên. Trong trường hợp không thể thương lượng, thỏa thuận, các Bên có quyền yêu cầu Tòa án có thẩm quyền giải quyết theo quy định của pháp luật.\n5.5. Hợp đồng này được lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ một bản và có hiệu lực từ ngày ký.",
+      "unit_changes": [
+        {
+          "source_unit": "Điều 5: Điều khoản thi hành",
+          "target_unit": "Điều 5: Điều khoản thi hành",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "5.1.",
+          "target_unit": "5.1.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Hai Bên cam kết hoàn toàn tự nguyện khi ký kết và thực hiện nghiêm túc Hợp đồng lao động này.",
+          "target_unit": "Hai Bên cam kết hoàn toàn tự nguyện khi ký kết và thực hiện nghiêm túc Hợp đồng lao động này.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Mọi sự thay đổi, bổ sung chỉ có giá trị khi được sự đồng ý bằng văn bản của cả hai Bên.",
+          "target_unit": "Mọi sự thay đổi, bổ sung chỉ có giá trị khi được sự đồng ý bằng văn bản của cả hai Bên.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "5.2.",
+          "target_unit": "5.2.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Những vấn đề về lao động không ghi trong hợp đồng lao động này thì áp dụng quy định của Nội quy lao động, thỏa ước lao động tập thể, trường hợp thỏa ước lao động tập thể, nội quy lao động chưa có quy định thì áp dụng quy định của pháp luật lao động.",
+          "target_unit": "Những vấn đề về lao động không ghi trong hợp đồng lao động này thì áp dụng quy định của Nội quy lao động, thỏa ước lao động tập thể, trường hợp thỏa ước lao động tập thể, nội quy lao động chưa có quy định thì áp dụng quy định của pháp luật lao động.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "5.3.",
+          "target_unit": "5.3.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Thỏa thuận bảo mật và các phụ lục hợp đồng, (nếu có) là một bộ phận không thể tách rời của Hợp đồng này, có giá trị pháp lý ràng buộc các Bên liên quan.",
+          "target_unit": "Thỏa thuận bảo mật và các phụ lục hợp đồng, (nếu có) là một bộ phận không thể tách rời của Hợp đồng này, có giá trị pháp lý ràng buộc các Bên liên quan.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "5.4.",
+          "target_unit": "5.4.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Mọi tranh chấp phát sinh từ Hợp đồng này được giải quyết trên cơ sở thương lượng, thỏa thuận giữa hai bên.",
+          "target_unit": "Mọi tranh chấp phát sinh từ Hợp đồng này được giải quyết trên cơ sở thương lượng, thỏa thuận giữa hai bên.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Trong trường hợp không thể thương lượng, thỏa thuận, các Bên có quyền yêu cầu Tòa án có thẩm quyền giải quyết theo quy định của pháp luật.",
+          "target_unit": "Trong trường hợp không thể thương lượng, thỏa thuận, các Bên có quyền yêu cầu Tòa án có thẩm quyền giải quyết theo quy định của pháp luật.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "5.5.",
+          "target_unit": "5.5.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        },
+        {
+          "source_unit": "Hợp đồng này được lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ một bản và có hiệu lực từ ngày ký.",
+          "target_unit": "Hợp đồng này được lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ một bản và có hiệu lực từ ngày ký.",
+          "similarity": 1.0,
+          "change_type": "unchanged"
+        }
+      ],
+      "clause_change_type": "unchanged",
+      "supported": true,
+      "guardrail_status": "supported_unchanged",
+      "summary_seed": "Điều 5 hầu như không có thay đổi đáng kể giữa phiên bản A và B.",
+      "summary": "Điều 5 hầu như không có thay đổi đáng kể giữa phiên bản A và B.",
+      "importance": "high",
+      "summary_source": "rule_based"
+    }
+  ]
+}
