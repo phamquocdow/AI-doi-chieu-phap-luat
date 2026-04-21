@@ -24,8 +24,6 @@ PIPELINE_STEPS = [
     "apply_guardrail.py",
     "build_comparison_report.py",
 ]
-
-
 st.set_page_config(
     page_title="Week 9 - Legal Compare UI",
     page_icon="⚖️",
