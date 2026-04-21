@@ -1,0 +1,36 @@
+========================================================================================
+KET QUA TEST CHAT LUONG TUAN 11
+========================================================================================
+
+1) Tong quan alignment
+- Tong cap doi chieu: 5
+- Matched: 5 (100.00%)
+- Weak match: 0 (0.00%)
+- No match: 0 (0.00%)
+- Diem alignment trung binh: 0.9991
+- Diem nho nhat/lon nhat: 0.9966 / 1.0000
+
+2) Tong quan guardrail
+- So dieu khoan supported: 5
+- So dieu khoan blocked: 0
+- Phan bo guardrail_status:
+  + supported_modified: 2
+  + supported_unchanged: 3
+
+3) Tong quan thay doi
+- Modified clauses (report): 2
+- Unchanged clauses (report): 3
+- Phan bo change_subtype:
+  + numeric_change: 3
+  + time_change: 2
+
+4) Kiem tra chat luong du lieu
+- Khong phat hien source_chunk_id bi lap trong aligned_pairs.
+
+5) Mau bang chung (3 dieu khoan modified dau tien)
+- Vi du 1: Dieu 2 | score=0.999041 | subtype=numeric_change
+  + A: Ngày làm việc: từ ngày thứ 2 đến hết buổi sáng ngày thứ 7.
+  + B: Ngày làm việc: từ ngày thứ 2 đến hết buổi chiều ngày thứ 6.
+- Vi du 2: Dieu 3 | score=0.996641 | subtype=numeric_change
+  + A: Các khoản phụ cấp: Theo quy định của Công ty;
+  + B: Các khoản phụ cấp: Happy Hour, Tiền xăng xe theo quy định của Công ty

@@ -255,7 +255,7 @@ def render_header() -> None:
     st.markdown(
         """
         <div class="hero">
-            <h1>Week 9 - UI bản 1: Đối chiếu hợp đồng lao động</h1>
+            <h1>Đối chiếu hợp đồng</h1>
             <p>
                 Upload hai phiên bản văn bản, xem song song và theo dõi kết quả đối chiếu theo từng điều khoản.
             </p>
