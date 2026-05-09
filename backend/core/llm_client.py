@@ -1,3 +1,5 @@
+"""LLM client — hỗ trợ Ollama native API và OpenAI-compatible API."""
+
 import json
 import re
 import urllib.request
@@ -26,7 +28,6 @@ def _call_ollama_native(
         "model": LLM_MODEL,
         "prompt": prompt,
         "stream": False,
-        "format": "json",
         "options": {
             "temperature": temperature,
             "num_predict": max_tokens,
@@ -62,8 +63,7 @@ def _call_openai_compatible(
         "model": LLM_MODEL,
         "messages": messages,
         "temperature": temperature,
-        "max_tokens": max_tokens,
-        "response_format": {"type": "json_object"}
+        "max_tokens": max_tokens
     }
 
     headers = {"Content-Type": "application/json"}
@@ -93,6 +93,7 @@ def chat_completion(
     use_cache: bool = True,
     retries: int = 1,
 ) -> str:
+    """Gọi LLM — tự động dispatch theo config, có retry logic."""
     prompt_text = messages[-1]["content"] if messages else ""
     cache_key = prompt_text
 
@@ -111,11 +112,9 @@ def chat_completion(
             else:
                 result = _call_openai_compatible(messages, temperature, max_tokens)
                 
-            # Basic validation to ensure it's at least valid JSON
-            if extract_json_object(result) is not None:
-                if use_cache and result:
-                    cache.set(cache_key, LLM_MODEL, result)
-                return result
+            if use_cache and result:
+                cache.set(cache_key, LLM_MODEL, result)
+            return result
                 
         except Exception as e:
             if attempt == retries:
@@ -123,6 +122,67 @@ def chat_completion(
             print(f"LLM Call Failed (Attempt {attempt+1}/{retries+1}). Retrying...")
 
     return ""
+
+
+def stream_chat_completion(messages: List[Dict[str, str]], temperature: float = 0.0):
+    """Gọi LLM và trả về dạng stream (dành cho Chatbot)."""
+    if LLM_PROVIDER == "ollama":
+        url = f"{OLLAMA_BASE_URL.rstrip('/')}/api/chat"
+        payload = {
+            "model": LLM_MODEL,
+            "messages": messages,
+            "stream": True,
+            "options": {"temperature": temperature}
+        }
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=LLM_TIMEOUT) as resp:
+                for line in resp:
+                    if line:
+                        data = json.loads(line.decode("utf-8"))
+                        if "message" in data and "content" in data["message"]:
+                            yield data["message"]["content"]
+        except Exception as exc:
+            yield f"\n[Lỗi kết nối Ollama: {exc}]"
+    else:
+        # OpenAI Compatible
+        base = LLM_BASE_URL.rstrip("/")
+        url = f"{base}/chat/completions" if base.endswith("/v1") else f"{base}/v1/chat/completions"
+        payload = {
+            "model": LLM_MODEL,
+            "messages": messages,
+            "temperature": temperature,
+            "stream": True
+        }
+        headers = {"Content-Type": "application/json"}
+        if LLM_API_KEY:
+            headers["Authorization"] = f"Bearer {LLM_API_KEY}"
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=LLM_TIMEOUT) as resp:
+                for line in resp:
+                    line = line.decode("utf-8").strip()
+                    if line.startswith("data: ") and line != "data: [DONE]":
+                        try:
+                            data = json.loads(line[6:])
+                            if "choices" in data and len(data["choices"]) > 0:
+                                delta = data["choices"][0].get("delta", {})
+                                if "content" in delta and delta["content"]:
+                                    yield delta["content"]
+                        except json.JSONDecodeError:
+                            pass
+        except Exception as exc:
+            yield f"\n[Lỗi kết nối API: {exc}]"
 
 
 def check_ollama_health() -> bool:
@@ -142,6 +202,7 @@ def extract_json_object(text: str) -> Optional[Dict[str, Any]]:
     if not text:
         return None
 
+    # Robustly strip <think> blocks
     text = re.sub(r"<think>[\s\S]*?</think>", "", text).strip()
 
     if text.startswith("```"):

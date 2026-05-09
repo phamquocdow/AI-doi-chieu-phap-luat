@@ -4,7 +4,8 @@ import shutil
 from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
+from pydantic import BaseModel
 
 from .config import LLM_MODEL, LLM_PROVIDER, DATA_DIR
 from .core.document_parser import extract_text_from_file, smart_split
@@ -31,6 +32,7 @@ CACHE_DIR.mkdir(parents=True, exist_ok=True)
 SESSION_STATE = {
     "file_1": None,
     "file_2": None,
+    "latest_report": None,
 }
 
 @app.post("/api/documents/upload")
@@ -120,6 +122,8 @@ async def compare_documents():
             raise HTTPException(status_code=400, detail="Không tìm thấy dữ liệu vector. Vui lòng upload lại.")
 
         report = run_llm_compare_from_chunks(chunks_a, chunks_b)
+        
+        SESSION_STATE["latest_report"] = report
 
         duration = time.time() - start_time
 
@@ -133,6 +137,46 @@ async def compare_documents():
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class ChatRequest(BaseModel):
+    message: str
+
+@app.post("/api/chat")
+async def chat_with_report(req: ChatRequest):
+    report = SESSION_STATE.get("latest_report")
+    if not report:
+        raise HTTPException(status_code=400, detail="Chưa có kết quả so sánh để hỏi đáp.")
+    
+    # Filter modified, added, deleted
+    details = report.get("details", [])
+    changes = [item for item in details if item.get("clause_change_type") in ["modified", "added", "deleted"]]
+    
+    # Build context string
+    context_lines = []
+    for item in changes:
+        title = item.get("section_title_a") or item.get("section_title_b") or "Đoạn văn"
+        summary = item.get("summary", "")
+        context_lines.append(f"- {title}: {summary}")
+    
+    context_str = "\n".join(context_lines)
+    if not context_str:
+        context_str = "Không có thay đổi nào giữa hai văn bản."
+    
+    prompt = f"""Bạn là trợ lý pháp lý chuyên nghiệp. Hãy trả lời câu hỏi của người dùng dựa vào danh sách các điểm thay đổi giữa hai văn bản dưới đây (KHÔNG dùng kiến thức bên ngoài nếu không chắc chắn).
+    
+DANH SÁCH THAY ĐỔI:
+{context_str}
+
+CÂU HỎI CỦA NGƯỜI DÙNG: {req.message}
+"""
+    messages = [
+        {"role": "system", "content": "Bạn là trợ lý pháp lý khách quan, tư vấn dựa trên dữ liệu so sánh được cung cấp."},
+        {"role": "user", "content": prompt}
+    ]
+    
+    from .core.llm_client import stream_chat_completion
+    return StreamingResponse(stream_chat_completion(messages, temperature=0.1), media_type="text/event-stream")
 
 
 @app.get("/api/health")

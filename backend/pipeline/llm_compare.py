@@ -1,3 +1,4 @@
+"""LLM-powered comparison pipeline — concurrent summarization of computed diffs."""
 
 from typing import List, Dict, Any
 import concurrent.futures
@@ -10,6 +11,7 @@ from .alignment import align_documents
 from .quick_compare import estimate_importance, detect_subtype
 
 def prompt_llm_for_batch_summary(batch: List[Any]) -> Dict[int, str]:
+    """Gọi LLM tóm tắt một danh sách các thay đổi cùng lúc (Batching)."""
     if not batch:
         return {}
 
@@ -29,42 +31,53 @@ NGỮ CẢNH: {context_snippet}
 
     combined_prompt = "\n".join(prompt_data)
     
-    prompt = f"""Bạn là trợ lý pháp lý chuyên nghiệp. Dưới đây là danh sách các thay đổi văn bản được đánh số [MỤC SỐ X].
-Hãy tóm tắt ngắn gọn (1 câu) ý nghĩa sự thay đổi của TỪNG mục.
+    prompt = f"""Bạn là chuyên gia phân tích pháp lý. Dưới đây là danh sách các thay đổi văn bản được đánh số [MỤC SỐ X].
+Nhiệm vụ của bạn là phân tích và viết một "chi tiết kết luận" (khoảng 2-3 câu) giải thích chuyên sâu về bản chất và ý nghĩa pháp lý của sự thay đổi cho TỪNG mục.
+KHÔNG được chỉ liệt kê "thay đổi từ A thành B". Hãy giải thích thay đổi đó có ý nghĩa gì (ví dụ: làm rõ quy định, siết chặt điều kiện, thay đổi mốc thời gian...).
 
 DANH SÁCH THAY ĐỔI:
 {combined_prompt}
 
-Yêu cầu: Chỉ trả về JSON duy nhất, dạng danh sách (Array) các đối tượng:
-[
-    {{"id": 0, "summary": "Tóm tắt mục 0"}},
-    {{"id": 1, "summary": "Tóm tắt mục 1"}}
-]
+YÊU CẦU TRẢ LỜI: Trả về văn bản thuần túy theo đúng định dạng sau, tuyệt đối không dùng format markdown hay JSON. Bắt đầu bằng [MỤC SỐ X]:
+[MỤC SỐ 0]
+Nhận xét chi tiết cho mục 0...
+[MỤC SỐ 1]
+Nhận xét chi tiết cho mục 1...
 /no_think"""
 
     messages = [
-        {"role": "system", "content": "You are a precise legal assistant. Output ONLY valid JSON array of objects."},
+        {"role": "system", "content": "Bạn là chuyên gia pháp lý. Hãy tuân thủ nghiêm ngặt định dạng văn bản yêu cầu."},
         {"role": "user", "content": prompt},
     ]
 
     try:
-        from ..core.llm_client import chat_completion, extract_json_object
-        response_text = chat_completion(messages, temperature=0.1, max_tokens=1024)
-        json_array = extract_json_object(response_text)
+        from ..core.llm_client import chat_completion
+        import re
+        
+        response_text = chat_completion(messages, temperature=0.1, max_tokens=1500)
         
         result = {}
-        if isinstance(json_array, list):
-            for item in json_array:
-                if isinstance(item, dict) and "id" in item and "summary" in item:
-                    result[int(item["id"])] = item["summary"]
+        pattern = r"\[MỤC SỐ\s+(\d+)\](.*?)(?=\[MỤC SỐ\s+\d+\]|$)"
+        matches = re.finditer(pattern, response_text, re.DOTALL)
+        
+        for match in matches:
+            idx_str = match.group(1).strip()
+            summary_content = match.group(2).strip()
+            # Bỏ đi các chuỗi nhiễu thừa nếu có
+            if summary_content.startswith(":") or summary_content.startswith("-"):
+                summary_content = summary_content[1:].strip()
+            if idx_str.isdigit():
+                result[int(idx_str)] = summary_content
         return result
     except Exception as e:
         print(f"LLM Batch Error: {e}")
         return {}
 
 def run_llm_compare_from_chunks(chunks_a: List[Dict], chunks_b: List[Dict]) -> Dict[str, Any]:
+    """Pipeline so sánh LLM: nhận chunks đã chia sẵn từ Qdrant → align → algorithm diff → concurrent LLM summarize."""
     aligned_pairs = align_documents(chunks_a, chunks_b)
 
+    # Step 1: Compute algorithmic diff for all matched pairs
     needs_llm = []
     for pair in aligned_pairs:
         if pair.is_matched:
@@ -72,14 +85,16 @@ def run_llm_compare_from_chunks(chunks_a: List[Dict], chunks_b: List[Dict]) -> D
             if not pair.diff["is_identical"]:
                 needs_llm.append(pair)
 
+    # Step 2: Batch LLM summarization (Gom nhóm để giảm số lần request)
     if needs_llm:
-        batch_size = 5 
+        batch_size = 5 # Tối ưu hóa: Gọi 1 lần tóm tắt được 5 đoạn
         for i in range(0, len(needs_llm), batch_size):
             batch = needs_llm[i:i+batch_size]
             summaries = prompt_llm_for_batch_summary(batch)
             for idx, pair in enumerate(batch):
                 pair.llm_summary = summaries.get(idx, pair.diff["change_summary"])
 
+    # Step 3: Build report
     details = []
     stats = {
         "total_clauses_compared": len(aligned_pairs),
