@@ -1,13 +1,15 @@
 import time
 import os
 import shutil
+import traceback
 from pathlib import Path
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
-from .config import LLM_MODEL, LLM_PROVIDER, DATA_DIR
+from .config import LLM_MODEL, LLM_PROVIDER, DATA_DIR, RERANKER_ENABLED
 from .core.document_parser import extract_text_from_file, smart_split
 from .core.llm_client import check_ollama_health
 from .core.qdrant_store import vector_store
@@ -15,7 +17,19 @@ from .core.pdf_converter import convert_to_pdf
 from .pipeline.quick_compare import run_quick_compare
 from .pipeline.llm_compare import run_llm_compare_from_chunks
 
-app = FastAPI(title="Legal Compare API")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Preloading embedding model...")
+    from .core.embedding_manager import get_embedder
+    get_embedder()
+    
+    if RERANKER_ENABLED:
+        print("Preloading reranker model...")
+        from .core.reranker import _load_reranker
+        _load_reranker()
+    yield
+
+app = FastAPI(title="Legal Compare API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,7 +42,6 @@ app.add_middleware(
 CACHE_DIR = DATA_DIR / "cache"
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
-# Giả lập state session đơn giản trong memory (Cho 1 user/session)
 SESSION_STATE = {
     "file_1": None,
     "file_2": None,
@@ -38,7 +51,7 @@ SESSION_STATE = {
 @app.post("/api/documents/upload")
 async def upload_document(
     file: UploadFile = File(...),
-    slot: str = Query(...)  # "file_1" hoặc "file_2"
+    slot: str = Query(...)
 ):
     if slot not in ["file_1", "file_2"]:
         raise HTTPException(status_code=400, detail="Slot không hợp lệ")
@@ -47,7 +60,6 @@ async def upload_document(
         raise HTTPException(status_code=409, detail="Cần upload file 1 trước")
 
     if slot == "file_1":
-        # Reset file 2 if uploading file 1 again
         SESSION_STATE["file_1"] = None
         SESSION_STATE["file_2"] = None
 
@@ -55,11 +67,9 @@ async def upload_document(
     temp_path = CACHE_DIR / f"upload_{slot}{file_ext}"
     pdf_path = CACHE_DIR / f"{slot}.pdf"
 
-    # Save uploaded file
     with temp_path.open("wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # 1. Trích xuất Text
     with temp_path.open("rb") as f:
         file_bytes = f.read()
     
@@ -67,18 +77,14 @@ async def upload_document(
     if not text:
         raise HTTPException(status_code=400, detail="Không thể trích xuất văn bản từ file")
 
-    # 2. Chunking
     chunks = smart_split(text)
 
-    # 3. Embedding -> Qdrant
     vector_store.add_chunks(doc_id=slot, chunks=chunks)
 
-    # 4. Convert to PDF for Preview
     try:
         convert_to_pdf(temp_path, pdf_path)
     except Exception as e:
         print(f"Warning: PDF conversion failed: {e}")
-        # Dù lỗi cũng không break luồng chính, nhưng ko có preview
     
     SESSION_STATE[slot] = {
         "filename": file.filename,
@@ -99,7 +105,6 @@ async def get_pdf(slot: str):
     pdf_path = CACHE_DIR / f"{slot}.pdf"
     if not pdf_path.exists():
         raise HTTPException(status_code=404, detail="Không tìm thấy PDF")
-    # Không truyền filename để trình duyệt hiển thị inline (không bị force download)
     return FileResponse(
         pdf_path, 
         media_type="application/pdf",
@@ -115,12 +120,13 @@ async def compare_documents():
     start_time = time.time()
 
     try:
-        chunks_a = vector_store.get_chunks_by_doc_id("file_1")
-        chunks_b = vector_store.get_chunks_by_doc_id("file_2")
+        chunks_a = vector_store.get_chunks_by_doc_id("file_1", with_vectors=True)
+        chunks_b = vector_store.get_chunks_by_doc_id("file_2", with_vectors=True)
 
         if not chunks_a or not chunks_b:
             raise HTTPException(status_code=400, detail="Không tìm thấy dữ liệu vector. Vui lòng upload lại.")
 
+        print(f"\nStarting comparison: {len(chunks_a)} vs {len(chunks_b)} chunks")
         report = run_llm_compare_from_chunks(chunks_a, chunks_b)
         
         SESSION_STATE["latest_report"] = report
@@ -134,7 +140,6 @@ async def compare_documents():
         }
 
     except Exception as e:
-        import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -148,11 +153,9 @@ async def chat_with_report(req: ChatRequest):
     if not report:
         raise HTTPException(status_code=400, detail="Chưa có kết quả so sánh để hỏi đáp.")
     
-    # Filter modified, added, deleted
     details = report.get("details", [])
     changes = [item for item in details if item.get("clause_change_type") in ["modified", "added", "deleted"]]
     
-    # Build context string
     context_lines = []
     for item in changes:
         title = item.get("section_title_a") or item.get("section_title_b") or "Đoạn văn"

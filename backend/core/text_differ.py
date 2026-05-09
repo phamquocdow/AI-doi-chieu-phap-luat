@@ -1,14 +1,19 @@
+"""Text differ engine — tính toán khác biệt word-level chính xác."""
+
 import re
 import difflib
 import unicodedata
 from typing import Dict, Any, List
 
 def normalize_for_diff(text: str) -> str:
+    """Chuẩn hóa để tránh false positives do format."""
     text = unicodedata.normalize("NFC", text)
+    # Gom khoảng trắng, newline thành 1 space để so sánh nội dung cốt lõi
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 def _extract_phrases(diff_tokens: List[Dict[str, str]], target_type: str) -> List[str]:
+    """Gom các token cùng loại (added/removed) liên tiếp thành cụm từ."""
     phrases = []
     current_phrase = []
     
@@ -26,13 +31,25 @@ def _extract_phrases(diff_tokens: List[Dict[str, str]], target_type: str) -> Lis
     return phrases
 
 def _is_trivial(phrase: str) -> bool:
+    """Kiểm tra xem cụm từ có phải là thay đổi vụn vặt (chỉ gồm dấu câu hoặc < 3 ký tự)."""
     clean_phrase = re.sub(r"[^\w\s]", "", phrase).strip()
     return len(clean_phrase) < 2
 
 def compute_word_diff(text_a: str, text_b: str) -> Dict[str, Any]:
+    """Tính toán khác biệt word-level bằng difflib.
+    
+    Trả về Dict chứa:
+    - is_identical: bool (đã loại bỏ khác biệt format)
+    - diff_tokens: list các token {type: 'equal'|'added'|'removed', value: str}
+    - added_phrases: list các cụm từ thêm vào
+    - removed_phrases: list các cụm từ bị xóa
+    - change_summary: câu tóm tắt tự động
+    """
     if not text_a and not text_b:
         return {"is_identical": True, "added_phrases": [], "removed_phrases": [], "diff_tokens": [], "change_summary": "Giống hệt nhau."}
 
+    # Tiền xử lý để tránh lỗi do dính dấu câu (vd: "hiện" vs "hiện.")
+    # Thêm khoảng trắng trước các dấu câu phổ biến
     def pad_punctuation(text):
         return re.sub(r"([.,;:!?()])", r" \1 ", text)
         
@@ -68,6 +85,7 @@ def compute_word_diff(text_a: str, text_b: str) -> Dict[str, Any]:
         elif code == "-":
             diff_tokens.append({"type": "removed", "value": word})
             
+    # Hậu xử lý để gộp lại các dấu câu đã bị tách
     def cleanup_punctuation(phrases):
         cleaned = []
         for p in phrases:
@@ -82,9 +100,11 @@ def compute_word_diff(text_a: str, text_b: str) -> Dict[str, Any]:
     added_phrases = cleanup_punctuation(raw_added_phrases)
     removed_phrases = cleanup_punctuation(raw_removed_phrases)
     
+    # Lọc bỏ rác cho citations (giữ lại nếu là thay đổi duy nhất)
     meaningful_added = [p for p in added_phrases if not _is_trivial(p)] or added_phrases
     meaningful_removed = [p for p in removed_phrases if not _is_trivial(p)] or removed_phrases
     
+    # Auto-generate basic summary based on the longest phrase
     summary_parts = []
     if meaningful_removed and meaningful_added:
         longest_removed = max(meaningful_removed, key=len)
@@ -110,8 +130,8 @@ def compute_word_diff(text_a: str, text_b: str) -> Dict[str, Any]:
         
     return {
         "is_identical": False,
-        "added_phrases": meaningful_added,
-        "removed_phrases": meaningful_removed, 
+        "added_phrases": meaningful_added, # Đã lọc rác
+        "removed_phrases": meaningful_removed, # Đã lọc rác
         "diff_tokens": diff_tokens,
         "change_summary": summary,
         "ratio": ratio

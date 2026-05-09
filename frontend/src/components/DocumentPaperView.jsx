@@ -9,16 +9,16 @@ export default function DocumentPaperView({ pdfUrlA, pdfUrlB, details, highlight
           pdfUrl={pdfUrlA}
           details={details}
           side="a"
-          label="Bản cũ"
-          accentColor="#1d4ed8"
+          label="Bản 1"
+          accentColor="gray"
           highlightEnabled={highlightEnabled}
         />
         <PdfJsViewer
           pdfUrl={pdfUrlB}
           details={details}
           side="b"
-          label="Bản mới"
-          accentColor="#0369a1"
+          label="Bản 2"
+          accentColor="gray"
           highlightEnabled={highlightEnabled}
         />
       </div>
@@ -28,7 +28,7 @@ export default function DocumentPaperView({ pdfUrlA, pdfUrlB, details, highlight
           overflow-x: auto;
           padding-bottom: 0.5rem;
           scrollbar-width: thin;
-          scrollbar-color: #93c5fd #eff6ff;
+          scrollbar-color: gray gray;
         }
         .lc-doc-grid {
           display: grid;

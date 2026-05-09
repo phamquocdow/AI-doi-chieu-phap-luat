@@ -90,6 +90,8 @@ def convert_to_pdf(source_path: Path, destination_pdf: Path) -> str:
         except Exception as e:
             pass
             
+    # Fallback to pure python conversion is hard without libraries. 
+    # For now, just raise if we couldn't convert it.
     if not destination_pdf.exists():
         raise ValueError(f"Không thể chuyển đổi file {source_path.name} sang PDF trên máy chủ.")
     

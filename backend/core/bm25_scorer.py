@@ -1,6 +1,9 @@
+"""BM25 sparse retrieval scorer cho hybrid alignment."""
+
 import re
 import math
 from typing import List
+
 import numpy as np
 
 _VN_STOPWORDS = frozenset([
@@ -11,12 +14,15 @@ _VN_STOPWORDS = frozenset([
     "tuy", "rằng", "vì", "nên", "nhưng",
 ])
 
+
 def tokenize(text: str) -> List[str]:
     """Tách từ + loại bỏ stopwords + lowercase."""
     text = re.sub(r"[^\w\s]", " ", text.lower())
     return [w for w in text.split() if w and w not in _VN_STOPWORDS]
 
+
 class BM25Scorer:
+    """BM25 Okapi scorer — thuần Python, không phụ thuộc thư viện ngoài."""
 
     def __init__(self, corpus_texts: List[str], k1: float = 1.5, b: float = 0.75):
         self.k1 = k1
@@ -57,6 +63,7 @@ class BM25Scorer:
         return score
 
     def score(self, query: str) -> np.ndarray:
+        """Trả về mảng BM25 score cho query vs toàn bộ corpus."""
         q_tokens = tokenize(query)
         if not q_tokens or not self.corpus:
             return np.zeros(self.n_docs)

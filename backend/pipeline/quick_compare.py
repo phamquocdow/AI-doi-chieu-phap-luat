@@ -1,3 +1,5 @@
+"""Quick compare — rule-based so sánh tức thì (không cần LLM)."""
+
 from typing import Dict, Any
 
 from ..core.document_parser import smart_split
@@ -5,6 +7,7 @@ from ..core.text_differ import compute_word_diff
 from .alignment import align_documents
 
 def detect_subtype(summary: str, importance: str) -> str:
+    """Xác định subtype cơ bản."""
     summary_lower = summary.lower()
     if any(k in summary_lower for k in ["lương", "vnđ", "vnd", "tiền", "đồng"]):
         return "numeric_change"
@@ -15,6 +18,7 @@ def detect_subtype(summary: str, importance: str) -> str:
     return "general_change"
 
 def estimate_importance(diff: Dict[str, Any]) -> str:
+    """Ước tính tầm quan trọng dựa trên diff."""
     if diff["is_identical"]:
         return "low"
     
@@ -34,6 +38,7 @@ def estimate_importance(diff: Dict[str, Any]) -> str:
     return "low"
 
 def run_quick_compare(text_a: str, text_b: str) -> Dict[str, Any]:
+    """Rule-based comparison sử dụng word-level diff (difflib)."""
     chunks_a = smart_split(text_a)
     chunks_b = smart_split(text_b)
     
