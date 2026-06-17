@@ -27,80 +27,28 @@ const HL_DOT = {
 const HL_STRIKE = '#ef4444';
 
 // ─────────────────────────────────────────────────────────────
-// LCS
+// Mapping helpers
 // ─────────────────────────────────────────────────────────────
 
-function tokenize(text) {
-  return text ? text.split(/(\s+)/) : [];
-}
-
-function lcs(a, b) {
-  const m = a.length;
-  const n = b.length;
-
-  const matrix = Array.from({ length: m + 1 }, () =>
-    new Array(n + 1).fill(0)
-  );
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      matrix[i][j] =
-        a[i - 1] === b[j - 1]
-          ? matrix[i - 1][j - 1] + 1
-          : Math.max(matrix[i - 1][j], matrix[i][j - 1]);
+function buildCharMapping(chunkText, flatChunk) {
+  const map = [];
+  let fIdx = 0;
+  for (let cIdx = 0; cIdx < chunkText.length; cIdx++) {
+    if (/\s/.test(chunkText[cIdx])) {
+      map.push(-1);
+      continue;
     }
-  }
-
-  const result = [];
-
-  let i = m;
-  let j = n;
-
-  while (i > 0 && j > 0) {
-    if (a[i - 1] === b[j - 1]) {
-      result.unshift({
-        type: 'equal',
-        value: a[i - 1],
-      });
-
-      i--;
-      j--;
-    } else if (matrix[i - 1][j] >= matrix[i][j - 1]) {
-      result.unshift({
-        type: 'delete',
-        value: a[i - 1],
-      });
-
-      i--;
+    while (fIdx < flatChunk.length && /\s/.test(flatChunk[fIdx])) {
+      fIdx++;
+    }
+    if (fIdx < flatChunk.length) {
+      map.push(fIdx);
+      fIdx++;
     } else {
-      result.unshift({
-        type: 'insert',
-        value: b[j - 1],
-      });
-
-      j--;
+      map.push(-1);
     }
   }
-
-  while (i > 0) {
-    result.unshift({
-      type: 'delete',
-      value: a[i - 1],
-    });
-
-    i--;
-  }
-
-  while (j > 0) {
-    result.unshift({
-      type: 'insert',
-      value: b[j - 1],
-    });
-
-    j--;
-  }
-
-  return result;
+  return map;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -474,6 +422,8 @@ export default function PdfJsViewer({
                   addBox(overlay, r, side);
                 }
               } else if (item.diffTokens) {
+                const flatChunk = flat.substring(bounds.start, bounds.end);
+                const charMapIndex = buildCharMapping(item.chunkText, flatChunk);
                 let pos = 0;
 
                 for (const token of item.diffTokens) {
@@ -496,34 +446,53 @@ export default function PdfJsViewer({
                       text.length >= 1 &&
                       /\w/.test(text)
                     ) {
-                      const start = bounds.start + pos;
-
-                      const end =
-                        start + token.value.length;
-
-                      const set = new Set();
-
-                      for (
-                        let ci = start;
-                        ci < end &&
-                        ci < charMap.length;
-                        ci++
-                      ) {
-                        if (
-                          charMap[ci] !== undefined
-                        ) {
-                          set.add(charMap[ci]);
+                      const startOffset = pos;
+                      const endOffset = pos + token.value.length;
+                      
+                      let mappedStart = -1;
+                      for (let i = startOffset; i < endOffset; i++) {
+                        if (charMapIndex[i] !== -1) {
+                          mappedStart = charMapIndex[i];
+                          break;
+                        }
+                      }
+                      
+                      let mappedEnd = -1;
+                      for (let i = endOffset - 1; i >= startOffset; i--) {
+                        if (charMapIndex[i] !== -1) {
+                          mappedEnd = charMapIndex[i];
+                          break;
                         }
                       }
 
-                      const rects = indicesToRects(
-                        set,
-                        pgItems,
-                        viewport
-                      );
+                      if (mappedStart !== -1 && mappedEnd !== -1) {
+                        const start = bounds.start + mappedStart;
+                        const end = bounds.start + mappedEnd + 1;
 
-                      for (const r of rects) {
-                        addBox(overlay, r, side);
+                        const set = new Set();
+
+                        for (
+                          let ci = start;
+                          ci < end &&
+                          ci < charMap.length;
+                          ci++
+                        ) {
+                          if (
+                            charMap[ci] !== undefined
+                          ) {
+                            set.add(charMap[ci]);
+                          }
+                        }
+
+                        const rects = indicesToRects(
+                          set,
+                          pgItems,
+                          viewport
+                        );
+
+                        for (const r of rects) {
+                          addBox(overlay, r, side);
+                        }
                       }
                     }
                   }

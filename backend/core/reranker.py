@@ -26,7 +26,7 @@ def _load_reranker():
     # Attempt 1: FlagEmbedding (reference repo pattern)
     try:
         from FlagEmbedding import FlagReranker
-        _reranker = FlagReranker(RERANKER_MODEL, use_fp16=False)
+        _reranker = FlagReranker(RERANKER_MODEL, use_fp16=True)
         _reranker_available = True
         print(f"Reranker loaded (FlagReranker): {RERANKER_MODEL}")
         return _reranker
@@ -36,7 +36,7 @@ def _load_reranker():
     # Attempt 2: sentence-transformers CrossEncoder
     try:
         from sentence_transformers import CrossEncoder
-        _reranker = CrossEncoder(RERANKER_MODEL)
+        _reranker = CrossEncoder(RERANKER_MODEL, device="cuda")
         _reranker_available = True
         print(f"Reranker loaded (CrossEncoder): {RERANKER_MODEL}")
         return _reranker

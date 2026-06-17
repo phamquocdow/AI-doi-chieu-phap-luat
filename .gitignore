@@ -131,7 +131,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+src/venv
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -174,5 +174,30 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
-*.md
-*.lock
+
+# Custom Project Ignores
+node_modules/
+dist/
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# Application Data & Cache
+data/
+backend/data/
+frontend/node_modules/
+frontend/dist/
+
+# Vast.ai Deploy Files
+backend_deploy.zip
+backend/backend_deploy.zip
+
+# Uploaded/Generated files
+*.pdf
+*.docx
+*.zip
+
+# LLM Cache specifically
+**/cache/
+**/__pycache__/

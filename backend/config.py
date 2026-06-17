@@ -12,7 +12,7 @@ LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
 
 # --- Ollama Native Config ---
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-LLM_MODEL = os.getenv("LLM_MODEL", "qwen3:1.7b")
+LLM_MODEL = os.getenv("LLM_MODEL", "qwen3:8b")
 LLM_TIMEOUT = int(os.getenv("LLM_TIMEOUT", "120"))
 LLM_MAX_WORKERS = int(os.getenv("LLM_MAX_WORKERS", "3"))
 
@@ -27,7 +27,7 @@ LLM_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 # --- Embedding ---
 EMBED_MODEL = os.getenv("EMBED_MODEL", "BAAI/bge-m3")
-EMBED_DEVICE = os.getenv("EMBED_DEVICE", "cpu")
+EMBED_DEVICE = os.getenv("EMBED_DEVICE", "cuda")
 BATCH_SIZE = int(os.getenv("BATCH_SIZE", "32"))
 TOP_K = int(os.getenv("TOP_K", "5"))
 

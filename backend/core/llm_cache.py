@@ -1,3 +1,5 @@
+"""LLM response cache — tránh gọi LLM lại cho cùng prompt+model."""
+
 import json
 import hashlib
 import threading
@@ -11,6 +13,7 @@ _lock = threading.Lock()
 
 
 class LLMCache:
+    """Hash-based cache lưu kết quả LLM ra file JSON, thread-safe."""
 
     def __init__(self, cache_file: Path = _CACHE_FILE):
         self.cache_file = cache_file

@@ -15,7 +15,6 @@ _SECTION_NUM_RE = re.compile(
     re.IGNORECASE,
 )
 
-
 def _is_numbering_only_change(text_a: str, text_b: str) -> bool:
     norm_a = re.sub(r'\s+', ' ', _SECTION_NUM_RE.sub('', text_a)).strip().lower()
     norm_b = re.sub(r'\s+', ' ', _SECTION_NUM_RE.sub('', text_b)).strip().lower()
@@ -163,14 +162,14 @@ def run_llm_compare_from_chunks(chunks_a: List[Dict], chunks_b: List[Dict]) -> D
             status = "added"
             summary = "Đoạn này được thêm mới."
             importance = "high"
-            citations_b = [_first_sentence(pair.text_b)] if pair.text_b else []
+            citations_b = [pair.text_b[:120] + "..."] if len(pair.text_b) > 120 else [pair.text_b]
             stats["modified_clauses"] += 1
 
         elif not cb:
             status = "deleted"
             summary = "Đoạn này đã bị xóa."
             importance = "high"
-            citations_a = [_first_sentence(pair.text_a)] if pair.text_a else []
+            citations_a = [pair.text_a[:120] + "..."] if len(pair.text_a) > 120 else [pair.text_a]
             stats["modified_clauses"] += 1
 
         else:
