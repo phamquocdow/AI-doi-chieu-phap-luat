@@ -22,7 +22,6 @@ def tokenize(text: str) -> List[str]:
 
 
 class BM25Scorer:
-    """BM25 Okapi scorer — thuần Python, không phụ thuộc thư viện ngoài."""
 
     def __init__(self, corpus_texts: List[str], k1: float = 1.5, b: float = 0.75):
         self.k1 = k1

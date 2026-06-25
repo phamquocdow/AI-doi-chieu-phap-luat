@@ -1,22 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
 
 :root {
-  /* Docker Desktop inspired theme */
-  --bg-main: #f4f6f8;
+  /* Legal-tech light theme */
+  --bg-main: #eef1f6;
   --bg-panel: #ffffff;
-  --bg-sidebar: #f9fafb;
-  --bg-hover: rgba(29, 99, 237, 0.04);
-  
+  --bg-sidebar: #f7f9fc;
+  --bg-elevated: #fbfcfe;
+  --bg-hover: rgba(29, 99, 237, 0.05);
+
   --accent-blue: #1d63ed;
   --accent-blue-light: #0db7ed;
   --accent-blue-hover: #1450c4;
   --accent-blue-bg: rgba(29, 99, 237, 0.08);
+  --accent-grad: linear-gradient(135deg, #2b72f4 0%, #1450c4 100%);
 
-  --text-main: #1a1f2b;
-  --text-muted: #6b7280;
+  --text-main: #131825;
+  --text-muted: #687085;
+  --text-faint: #99a1b3;
   --text-inverse: #ffffff;
 
-  --border-hairline: #e2e5e9;
+  --border-hairline: #e4e8ef;
+  --border-strong: #d3d9e3;
   
   /* Status colors */
   --ok-text: #16a34a;
@@ -33,7 +37,17 @@
   --radius-pill: 9999px;
 
   --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', 'Inter', system-ui, sans-serif;
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Shadows nhuốm sắc nền (xanh-xám lạnh) thay vì đen thuần */
+  --shadow-sm: 0 1px 2px rgba(26, 31, 43, 0.06);
+  --shadow-md: 0 4px 16px rgba(26, 31, 43, 0.08);
+  --shadow-lg: 0 12px 32px rgba(26, 31, 43, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 * {
@@ -45,16 +59,73 @@
 body {
   font-family: var(--font-ui);
   background-color: var(--bg-main);
+  background-image:
+    radial-gradient(1200px 600px at 100% -10%, rgba(29, 99, 237, 0.06), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(13, 183, 237, 0.05), transparent 55%);
+  background-attachment: fixed;
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-ui);
-  line-height: 1.2;
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Trạng thái tương tác chung */
+button {
+  transition: background 0.18s ease, color 0.18s ease,
+    border-color 0.18s ease, transform 0.08s ease, box-shadow 0.18s ease;
+}
+button:not(:disabled):active {
+  transform: translateY(0.5px) scale(0.985);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--accent-blue-bg);
+  color: var(--accent-blue);
+}
+
+/* Reusable helpers */
+.lc-lift {
+  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.lc-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+@keyframes lc-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.lc-fade-up {
+  animation: lc-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Animations */

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
-import { ZoomIn, ZoomOut, Maximize } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize, FileX2 } from 'lucide-react';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -9,127 +9,72 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 
 const BASE_URL = 'http://localhost:8000';
 
+// Bản cũ (a) = đỏ (nội dung bị xóa/đổi) · Bản mới (b) = xanh dương (nội dung thêm/mới)
 const HL_FILL = {
-  a: 'rgba(239,68,68,0.13)',
-  b: 'rgba(29,78,216,0.12)',
+  a: 'rgba(248,113,113,0.38)',
+  b: 'rgba(96,150,255,0.38)',
 };
 
 const HL_BORDER = {
-  a: 'rgba(220,38,38,0.18)',
-  b: 'rgba(29,78,216,0.18)',
+  a: 'rgba(220,38,38,0.95)',
+  b: 'rgba(29,99,237,0.95)',
 };
 
 const HL_DOT = {
   a: '#dc2626',
-  b: '#1d4ed8',
+  b: '#1d63ed',
 };
-
-const HL_STRIKE = '#ef4444';
-
-// ─────────────────────────────────────────────────────────────
-// Mapping helpers
-// ─────────────────────────────────────────────────────────────
-
-function buildCharMapping(chunkText, flatChunk) {
-  const map = [];
-  let fIdx = 0;
-  for (let cIdx = 0; cIdx < chunkText.length; cIdx++) {
-    if (/\s/.test(chunkText[cIdx])) {
-      map.push(-1);
-      continue;
-    }
-    while (fIdx < flatChunk.length && /\s/.test(flatChunk[fIdx])) {
-      fIdx++;
-    }
-    if (fIdx < flatChunk.length) {
-      map.push(fIdx);
-      fIdx++;
-    } else {
-      map.push(-1);
-    }
-  }
-  return map;
-}
 
 // ─────────────────────────────────────────────────────────────
 // PDF helpers
 // ─────────────────────────────────────────────────────────────
 
-function buildFlat(items) {
-  let flat = '';
-  const charMap = [];
+// Chuỗi "nén": bỏ TOÀN BỘ khoảng trắng + map vị trí ký tự -> index text-item.
+// pdf.js thường tách chữ tiếng Việt thành nhiều mảnh rời ("CỘNG" -> "C","Ộ","NG"),
+// nên so khớp trên chuỗi còn khoảng trắng sẽ trượt. Nén lại giúp khớp ổn định.
+function buildCompact(items) {
+  let compact = '';
+  const toItem = [];
 
   for (let ti = 0; ti < items.length; ti++) {
-    const s = items[ti].str || '';
-
-    for (const ch of s) {
-      charMap.push(ti);
-      flat += ch;
-    }
-
-    if (s.length) {
-      charMap.push(ti);
-      flat += ' ';
+    for (const ch of (items[ti].str || '')) {
+      if (/\s/.test(ch)) continue;
+      compact += ch;
+      toItem.push(ti);
     }
   }
 
-  return { flat, charMap };
+  return { compact, compactLower: compact.toLowerCase(), toItem };
 }
 
-function findContextBounds(flat, chunkText) {
+// Tìm vùng [start,end) trong chuỗi nén cho một đoạn văn (bỏ qua khoảng trắng, có fallback mỏ neo).
+function findChunkRegion(compactLower, chunkText) {
   if (!chunkText) return null;
-  const cleanChunk = chunkText.replace(/\s+/g, ' ').trim();
-  if (cleanChunk.length < 10) return null;
+  const needle = chunkText.replace(/\s+/g, '').toLowerCase();
+  if (needle.length < 8) return null;
 
-  // 1. Khớp chính xác toàn bộ (dùng regex linh hoạt khoảng trắng)
-  const fullSrc = cleanChunk.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s+');
-  try {
-    const fullRe = new RegExp(fullSrc, 'gi');
-    const m = fullRe.exec(flat);
-    if (m) return { start: m.index, end: m.index + m[0].length };
-  } catch (e) { }
+  // 1. Khớp nguyên đoạn
+  const idx = compactLower.indexOf(needle);
+  if (idx !== -1) return { start: idx, end: idx + needle.length };
 
-  // 2. Fallback: Dùng mỏ neo đầu + cuối (Anchor-based)
-  // Nếu giữa đoạn có ký tự lạ, vẫn tìm được vùng bao quanh dựa vào đầu/cuối đoạn
-  const ANCHOR_LEN = Math.min(40, Math.floor(cleanChunk.length / 2));
-  const startAnchor = cleanChunk.slice(0, ANCHOR_LEN).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s+');
-  const endAnchor = cleanChunk.slice(-ANCHOR_LEN).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s+');
-  let startIdx = -1, endIdx = -1;
-  try {
-    const startRe = new RegExp(startAnchor, 'gi');
-    const startMatch = startRe.exec(flat);
-    if (startMatch) startIdx = startMatch.index;
+  // 2. Fallback: mỏ neo đầu + cuối
+  const A = Math.min(30, Math.floor(needle.length / 2));
+  const startA = needle.slice(0, A);
+  const endA = needle.slice(-A);
 
-    const endRe = new RegExp(endAnchor, 'gi');
-    if (startIdx !== -1) endRe.lastIndex = startIdx;
-    const endMatch = endRe.exec(flat);
-    if (endMatch) endIdx = endMatch.index + endMatch[0].length;
-  } catch (e) { }
+  const s = compactLower.indexOf(startA);
+  let e = s !== -1 ? compactLower.indexOf(endA, s + A) : -1;
+  if (e === -1) e = compactLower.indexOf(endA);
 
-  if (startIdx !== -1 && endIdx !== -1) return { start: startIdx, end: endIdx };
-  else if (startIdx !== -1) return { start: startIdx, end: Math.min(flat.length, startIdx + cleanChunk.length + 100) };
-  else if (endIdx !== -1) return { start: Math.max(0, endIdx - cleanChunk.length - 100), end: endIdx };
-
-  // 3. Fallback: Tìm theo câu dài nhất bên trong chunk
-  const sentences = cleanChunk.split(/[.?!]\s/).filter(s => s.length > 25);
-  for (const s of sentences) {
-    const sAnchor = s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s+');
-    try {
-      const sRe = new RegExp(sAnchor, 'gi');
-      const sMatch = sRe.exec(flat);
-      if (sMatch) {
-        return {
-          start: Math.max(0, sMatch.index - 150),
-          end: Math.min(flat.length, sMatch.index + sMatch[0].length + 150)
-        };
-      }
-    } catch (e) { }
-  }
+  if (s !== -1 && e !== -1 && e + endA.length > s) return { start: s, end: e + endA.length };
+  if (s !== -1) return { start: s, end: Math.min(compactLower.length, s + needle.length) };
+  if (e !== -1) return { start: Math.max(0, e + endA.length - needle.length), end: e + endA.length };
 
   return null;
 }
 
 function indicesToRects(indexSet, items, viewport) {
+  // Tính bbox (toạ độ viewport) cho từng text-item trong tập, gom theo dòng
   const lineMap = new Map();
 
   for (const ti of indexSet) {
@@ -137,107 +82,81 @@ function indicesToRects(indexSet, items, viewport) {
 
     if (!it?.transform) continue;
 
-    const key = Math.round(it.transform[5]);
+    const {
+      transform: [, , , , tx, ty],
+      width: w = 0,
+      height: h = 10,
+    } = it;
 
-    if (!lineMap.has(key)) {
-      lineMap.set(key, []);
-    }
+    const [vx1, vy1] = viewport.convertToViewportPoint(tx, ty);
+    const [vx2, vy2] = viewport.convertToViewportPoint(tx + w, ty + h);
 
-    lineMap.get(key).push(ti);
+    const box = {
+      x0: Math.min(vx1, vx2),
+      y0: Math.min(vy1, vy2),
+      x1: Math.max(vx1, vx2),
+      y1: Math.max(vy1, vy2),
+    };
+
+    if (!isFinite(box.x0) || box.x1 <= box.x0 || box.y1 <= box.y0) continue;
+
+    // Khoá dòng dựa trên baseline (làm tròn để chịu lệch sub-pixel)
+    const key = Math.round(box.y0 / 3);
+
+    if (!lineMap.has(key)) lineMap.set(key, []);
+    lineMap.get(key).push(box);
   }
 
   const rects = [];
 
-  for (const tiList of lineMap.values()) {
-    let x0 = Infinity;
-    let y0 = Infinity;
-    let x1 = -Infinity;
-    let y1 = -Infinity;
-
-    for (const ti of tiList) {
-      const {
-        transform: [, , , , tx, ty],
-        width: w = 0,
-        height: h = 10,
-      } = items[ti];
-
-      const [vx1, vy1] = viewport.convertToViewportPoint(tx, ty);
-
-      const [vx2, vy2] = viewport.convertToViewportPoint(
-        tx + w,
-        ty + h
-      );
-
-      x0 = Math.min(x0, vx1, vx2);
-      y0 = Math.min(y0, vy1, vy2);
-
-      x1 = Math.max(x1, vx1, vx2);
-      y1 = Math.max(y1, vy1, vy2);
+  for (const boxes of lineMap.values()) {
+    // Chiều cao ĐỒNG NHẤT cho cả dòng (mép trên/dưới chung) → dải tô phẳng, đều
+    let top = Infinity;
+    let bot = -Infinity;
+    for (const b of boxes) {
+      top = Math.min(top, b.y0);
+      bot = Math.max(bot, b.y1);
     }
+    const lineH = bot - top;
 
-    if (isFinite(x0) && x1 > x0 && y1 > y0) {
-      rects.push({
-        x: x0,
-        y: y0,
-        width: x1 - x0,
-        height: y1 - y0,
-      });
+    // Sắp theo x rồi gộp các từ liền kề (cách nhau ~1 dấu cách) thành một dải,
+    // chừa khoảng trống ở những từ không thay đổi nằm giữa
+    boxes.sort((a, b) => a.x0 - b.x0);
+
+    let cur = null;
+    for (const b of boxes) {
+      if (!cur) { cur = { x0: b.x0, x1: b.x1 }; continue; }
+
+      const gap = b.x0 - cur.x1;
+      if (gap <= lineH * 0.6) {
+        cur.x1 = Math.max(cur.x1, b.x1);
+      } else {
+        rects.push({ x: cur.x0, y: top, width: cur.x1 - cur.x0, height: lineH });
+        cur = { x0: b.x0, x1: b.x1 };
+      }
     }
+    if (cur) rects.push({ x: cur.x0, y: top, width: cur.x1 - cur.x0, height: lineH });
   }
 
   return rects;
 }
 
-function getBoundsRects(bounds, items, flatData, viewport) {
-  if (!bounds) return [];
-
-  const { charMap } = flatData;
-
-  const set = new Set();
-
-  const start = Math.max(0, bounds.start);
-  const end = Math.min(charMap.length, bounds.end);
-
-  for (let ci = start; ci < end; ci++) {
-    if (charMap[ci] !== undefined) {
-      set.add(charMap[ci]);
-    }
-  }
-
-  return indicesToRects(set, items, viewport);
-}
-
 function addBox(overlay, rect, side) {
+  // Một lớp màu phẳng, đều: không viền, không gạch, không blend (tránh loang lổ)
+  const PAD_Y = 1.5;
+
   const box = document.createElement('div');
 
   box.style.cssText = `
     position:absolute;
     left:${Math.max(0, rect.x)}px;
-    top:${Math.max(0, rect.y)}px;
+    top:${Math.max(0, rect.y - PAD_Y)}px;
     width:${Math.max(4, rect.width)}px;
-    height:${Math.max(4, rect.height)}px;
+    height:${Math.max(6, rect.height + PAD_Y * 2)}px;
     background:${HL_FILL[side]};
-    border:1px solid ${HL_BORDER[side]};
-    border-radius:3px;
+    border-radius:2px;
     pointer-events:none;
   `;
-
-  if (side === 'a') {
-    const strike = document.createElement('div');
-
-    strike.style.cssText = `
-      position:absolute;
-      top:50%;
-      left:0;
-      width:100%;
-      height:1.5px;
-      background:${HL_STRIKE};
-      transform:translateY(-50%);
-      opacity:0.75;
-    `;
-
-    box.appendChild(strike);
-  }
 
   overlay.appendChild(box);
 }
@@ -259,6 +178,10 @@ export default function PdfJsViewer({
 
   // FIX render double React StrictMode
   const renderIdRef = useRef(0);
+
+  // Cache tài liệu PDF đã tải để zoom không phải tải lại từ server
+  const pdfDocRef = useRef(null);
+  const loadedUrlRef = useRef(null);
 
   const [pageNum, setPageNum] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -322,9 +245,14 @@ export default function PdfJsViewer({
         ? pdfUrl
         : `${BASE_URL}${pdfUrl}`;
 
-      const pdfDoc = await pdfjsLib.getDocument(fullUrl).promise;
-
-      if (currentRenderId !== renderIdRef.current) return;
+      // Chỉ tải PDF từ server khi URL đổi; zoom dùng lại doc đã cache
+      let pdfDoc = pdfDocRef.current;
+      if (!pdfDoc || loadedUrlRef.current !== fullUrl) {
+        pdfDoc = await pdfjsLib.getDocument(fullUrl).promise;
+        if (currentRenderId !== renderIdRef.current) return;
+        pdfDocRef.current = pdfDoc;
+        loadedUrlRef.current = fullUrl;
+      }
 
       setPageCount(pdfDoc.numPages);
 
@@ -349,7 +277,7 @@ export default function PdfJsViewer({
           height:${viewport.height}px;
           margin:0 auto 12px;
           background:#fff;
-          box-shadow:0 2px 12px rgba(0,0,0,.18);
+          box-shadow:0 2px 12px rgba(26,31,43,.14);
           flex-shrink:0;
         `;
 
@@ -398,110 +326,55 @@ export default function PdfJsViewer({
               (it) => it.str && it.str.trim()
             );
 
-            const flatData = buildFlat(pgItems);
+            // Chuỗi nén (bỏ hết khoảng trắng) để khớp ổn định với text PDF bị vỡ
+            const { compactLower, toItem } = buildCompact(pgItems);
 
-            const { flat, charMap } = flatData;
+            // Gom TẤT CẢ chữ cần tô vào một tập rồi vẽ một lần → dải đều, không chồng ô
+            const hlSet = new Set();
 
             for (const item of highlightItems) {
-              const bounds = findContextBounds(
-                flat,
-                item.chunkText
-              );
+              const region = findChunkRegion(compactLower, item.chunkText);
 
-              if (!bounds) continue;
+              if (!region) continue;
 
               if (item.isFullChunk) {
-                const rects = getBoundsRects(
-                  bounds,
-                  pgItems,
-                  flatData,
-                  viewport
-                );
-
-                for (const r of rects) {
-                  addBox(overlay, r, side);
+                const end = Math.min(toItem.length, region.end);
+                for (let k = Math.max(0, region.start); k < end; k++) {
+                  hlSet.add(toItem[k]);
                 }
               } else if (item.diffTokens) {
-                const flatChunk = flat.substring(bounds.start, bounds.end);
-                const charMapIndex = buildCharMapping(item.chunkText, flatChunk);
-                let pos = 0;
+                // Đi qua token theo thứ tự, TÌM TỪNG TỪ (đã nén) trong vùng chunk.
+                // Mỗi token khớp lại đồng bộ con trỏ nên không bị trượt.
+                let cursor = region.start;
 
                 for (const token of item.diffTokens) {
                   const isMatchSide =
-                    (side === 'a' &&
-                      token.type === 'delete') ||
-                    (side === 'b' &&
-                      token.type === 'insert');
+                    (side === 'a' && token.type === 'delete') ||
+                    (side === 'b' && token.type === 'insert');
 
-                  const advancesPos =
-                    token.type === 'equal' ||
-                    isMatchSide;
+                  // Token chỉ tồn tại ở phía bên kia → không có trong vùng này
+                  if (token.type !== 'equal' && !isMatchSide) continue;
 
-                  if (isMatchSide) {
-                    const text = (
-                      token.value || ''
-                    ).trim();
+                  const word = (token.value || '').replace(/\s+/g, '').toLowerCase();
+                  if (!word) continue;
 
-                    if (
-                      text.length >= 1 &&
-                      /\w/.test(text)
-                    ) {
-                      const startOffset = pos;
-                      const endOffset = pos + token.value.length;
-                      
-                      let mappedStart = -1;
-                      for (let i = startOffset; i < endOffset; i++) {
-                        if (charMapIndex[i] !== -1) {
-                          mappedStart = charMapIndex[i];
-                          break;
-                        }
-                      }
-                      
-                      let mappedEnd = -1;
-                      for (let i = endOffset - 1; i >= startOffset; i--) {
-                        if (charMapIndex[i] !== -1) {
-                          mappedEnd = charMapIndex[i];
-                          break;
-                        }
-                      }
+                  const idx = compactLower.indexOf(word, cursor);
+                  if (idx === -1 || idx >= region.end) continue;
 
-                      if (mappedStart !== -1 && mappedEnd !== -1) {
-                        const start = bounds.start + mappedStart;
-                        const end = bounds.start + mappedEnd + 1;
+                  const endPos = idx + word.length;
+                  cursor = endPos;
 
-                        const set = new Set();
+                  if (!isMatchSide || !/[\p{L}\p{N}]/u.test(word)) continue;
 
-                        for (
-                          let ci = start;
-                          ci < end &&
-                          ci < charMap.length;
-                          ci++
-                        ) {
-                          if (
-                            charMap[ci] !== undefined
-                          ) {
-                            set.add(charMap[ci]);
-                          }
-                        }
-
-                        const rects = indicesToRects(
-                          set,
-                          pgItems,
-                          viewport
-                        );
-
-                        for (const r of rects) {
-                          addBox(overlay, r, side);
-                        }
-                      }
-                    }
-                  }
-
-                  if (advancesPos) {
-                    pos += token.value.length;
+                  for (let k = idx; k < endPos && k < toItem.length; k++) {
+                    hlSet.add(toItem[k]);
                   }
                 }
               }
+            }
+
+            for (const r of indicesToRects(hlSet, pgItems, viewport)) {
+              addBox(overlay, r, side);
             }
           } catch (e) {
             console.error(e);
@@ -531,19 +404,30 @@ export default function PdfJsViewer({
     renderPdf();
   }, [renderPdf]);
 
+  // Giải phóng tài liệu PDF khi component bị gỡ (tránh rò bộ nhớ)
+  useEffect(() => {
+    return () => {
+      pdfDocRef.current?.destroy?.();
+      pdfDocRef.current = null;
+      loadedUrlRef.current = null;
+    };
+  }, []);
+
   const handleScroll = useCallback(() => {
     const w = wrapperRef.current;
     const r = pagesRootRef.current;
 
     if (!w || !r) return;
 
-    const probe =
-      w.scrollTop + w.clientHeight * 0.2;
+    // Dùng toạ độ tương đối so với vùng cuộn (không phụ thuộc offsetParent)
+    const wTop = w.getBoundingClientRect().top;
+    const probe = w.clientHeight * 0.2;
 
     let cur = 1;
 
     r.querySelectorAll('.lc-pdf-page').forEach((n) => {
-      if (n.offsetTop <= probe) {
+      const top = n.getBoundingClientRect().top - wTop;
+      if (top <= probe) {
         cur = Number(n.dataset.page);
       }
     });
@@ -563,7 +447,7 @@ export default function PdfJsViewer({
         flexDirection: 'column',
         minWidth: 0,
         flex: 1,
-        height: '100vh',
+        height: '100dvh',
       }}
     >
       {/* Header */}
@@ -719,6 +603,38 @@ export default function PdfJsViewer({
             }}
           >
             {error}
+          </div>
+        )}
+
+        {!pdfUrl && !error && (
+          <div
+            style={{
+              margin: 'auto',
+              maxWidth: 320,
+              textAlign: 'center',
+              color: 'var(--text-muted)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.75rem',
+              padding: '2rem 1rem',
+            }}
+          >
+            <div style={{
+              width: 52, height: 52, borderRadius: 'var(--radius-md)',
+              background: '#fff', border: '1px solid var(--border-hairline)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'var(--text-faint)',
+            }}>
+              <FileX2 size={24} strokeWidth={1.5} />
+            </div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-main)' }}>
+              Không có bản xem trước PDF
+            </div>
+            <div style={{ fontSize: '0.8rem', lineHeight: 1.55 }}>
+              Máy chủ chưa tạo được file PDF từ tài liệu (thường do thiếu LibreOffice
+              hoặc MS Word để chuyển đổi DOCX). Kết quả đối chiếu bên dưới vẫn hoạt động bình thường.
+            </div>
           </div>
         )}
 

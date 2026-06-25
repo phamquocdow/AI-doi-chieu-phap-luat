@@ -30,9 +30,10 @@ function lcs(a, b) {
   return result;
 }
 
-const DiffPanel = ({ textA, textB, side }) => {
+const DiffPanel = ({ textA, textB, side, diffMode = true }) => {
   const diff = useMemo(() => lcs(tokenize(textA || ''), tokenize(textB || '')), [textA, textB]);
   const hasChanges = diff.some(d => d.type !== 'equal');
+  const plainText = side === 'a' ? textA : textB;
   return (
     <div style={{
       padding: '0.875rem 1rem', fontSize: '0.85rem', lineHeight: 1.7,
@@ -43,7 +44,9 @@ const DiffPanel = ({ textA, textB, side }) => {
       borderRadius: 'var(--radius-sm)',
       color: 'var(--text-main)',
     }}>
-      {!hasChanges
+      {!diffMode
+        ? <span>{plainText || <em style={{ color: 'var(--text-muted)' }}>Không có nội dung.</em>}</span>
+        : !hasChanges
         ? <span style={{ color: 'var(--text-muted)' }}>{textA || textB || <em>Không có nội dung.</em>}</span>
         : diff.map((token, idx) => {
           if (token.type === 'equal') return <span key={idx}>{token.value}</span>;
@@ -69,9 +72,16 @@ const STAT_CFG = {
 const StatCard = ({ title, value, variant }) => {
   const c = STAT_CFG[variant] || STAT_CFG.blue;
   return (
-    <div style={{ background: 'var(--bg-panel)', padding: '1.25rem', borderRight: '1px solid var(--border-hairline)' }}>
-      <p style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.25rem' }}>{title}</p>
-      <p style={{ fontSize: '1.75rem', fontWeight: 700, color: c.color, margin: 0, fontVariantNumeric: 'tabular-nums' }}>{value}</p>
+    <div
+      style={{ background: 'var(--bg-panel)', padding: '1.3rem 1.25rem', borderRight: '1px solid var(--border-hairline)', transition: 'background 0.18s ease' }}
+      onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg-elevated)'; }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-panel)'; }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', margin: '0 0 0.4rem' }}>
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: c.color, flexShrink: 0 }} />
+        <p style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>{title}</p>
+      </div>
+      <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', fontWeight: 700, color: c.color, margin: 0, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em', lineHeight: 1 }}>{value}</p>
     </div>
   );
 };
@@ -112,7 +122,9 @@ const ClauseDetail = ({ item, index }) => {
       {/* Header */}
       <div
         onClick={() => setExpanded(e => !e)}
-        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.875rem 1.25rem', cursor: 'pointer' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.95rem 1.25rem', cursor: 'pointer', transition: 'background 0.15s ease' }}
+        onMouseEnter={e => { if (!expanded) e.currentTarget.style.background = 'var(--bg-hover)'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
       >
         {/* Index box */}
         <span style={{
@@ -172,7 +184,7 @@ const ClauseDetail = ({ item, index }) => {
                   }}
                 >
                   <GitCompare size={12} />
-                  {diffMode ? 'Bật so sánh' : 'Tắt so sánh'}
+                  {diffMode ? 'Tắt so sánh' : 'Bật so sánh'}
                 </button>
               </div>
 
@@ -182,7 +194,7 @@ const ClauseDetail = ({ item, index }) => {
                   <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
                     BẢN CŨ
                   </div>
-                  <DiffPanel textA={item.content_a} textB={item.content_b} side="a" />
+                  <DiffPanel textA={item.content_a} textB={item.content_b} side="a" diffMode={diffMode} />
                   {item.citations_a?.length > 0 && (
                     <div style={{ marginTop: '0.5rem', padding: '0.65rem 0.875rem', background: 'var(--bg-panel)', border: '1px solid var(--border-hairline)', borderLeft: '3px solid var(--err-text)', fontSize: '0.8rem', color: 'var(--text-main)', borderRadius: 'var(--radius-sm)' }}>
                       <strong style={{ fontSize: '0.75rem', color: 'var(--err-text)' }}>Từ khóa bị xóa:</strong>
@@ -195,7 +207,7 @@ const ClauseDetail = ({ item, index }) => {
                   <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
                     BẢN MỚI
                   </div>
-                  <DiffPanel textA={item.content_a} textB={item.content_b} side="b" />
+                  <DiffPanel textA={item.content_a} textB={item.content_b} side="b" diffMode={diffMode} />
                   {item.citations_b?.length > 0 && (
                     <div style={{ marginTop: '0.5rem', padding: '0.65rem 0.875rem', background: 'var(--bg-panel)', border: '1px solid var(--border-hairline)', borderLeft: '3px solid var(--accent-blue)', fontSize: '0.8rem', color: 'var(--text-main)', borderRadius: 'var(--radius-sm)' }}>
                       <strong style={{ fontSize: '0.75rem', color: 'var(--accent-blue)' }}>Từ khóa được thêm:</strong>
@@ -240,7 +252,7 @@ const SectionLabel = ({ icon: Icon, label, count }) => (
 );
 
 // ── Main ─────────────────────────────────────────────────────────────────────
-const ReportView = ({ data, onReset }) => {
+const ReportView = ({ data, onReset, chatMessages, setChatMessages, conversationId }) => {
   const { report, duration_sec, pdf_url_a, pdf_url_b } = data;
   const { summary, details } = report;
   const [activeTab, setActiveTab] = useState('report');
@@ -261,14 +273,17 @@ const ReportView = ({ data, onReset }) => {
     <div style={{ color: 'var(--text-main)', width: '100%', maxWidth: 1080 }}>
 
       {/* ── Master header ── */}
-      <div style={{
+      <div className="lc-fade-up" style={{
         background: 'var(--bg-panel)',
-        padding: '1.5rem 2rem',
+        padding: '1.6rem 2rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         border: '1px solid var(--border-hairline)',
-        borderRadius: 'var(--radius-md)',
-        marginBottom: '1.5rem'
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: 'var(--shadow-md)',
+        marginBottom: '1.5rem',
+        position: 'relative', overflow: 'hidden',
       }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'var(--accent-grad)' }} />
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
             <span style={{
@@ -317,13 +332,14 @@ const ReportView = ({ data, onReset }) => {
             onClick={() => setActiveTab(id)}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              padding: '0.75rem 1.5rem', border: 'none', background: 'transparent',
+              padding: '0.8rem 1.5rem', border: 'none', background: 'transparent',
               fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer',
               color: activeTab === id ? 'var(--accent-blue)' : 'var(--text-muted)',
               borderBottom: `2px solid ${activeTab === id ? 'var(--accent-blue)' : 'transparent'}`,
               marginBottom: -1,
-              transition: 'all 0.2s',
             }}
+            onMouseEnter={e => { if (activeTab !== id) e.currentTarget.style.color = 'var(--text-main)'; }}
+            onMouseLeave={e => { if (activeTab !== id) e.currentTarget.style.color = 'var(--text-muted)'; }}
           >
             <Icon size={16} /> {label}
           </button>
@@ -342,7 +358,7 @@ const ReportView = ({ data, onReset }) => {
           </div>
 
           {/* ══ REPORT FRAME ══ */}
-          <div style={{ border: '1px solid var(--border-hairline)', background: 'var(--bg-panel)', marginBottom: '2rem', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+          <div style={{ border: '1px solid var(--border-hairline)', background: 'var(--bg-panel)', marginBottom: '2rem', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
 
             {/* Frame header bar */}
             <div style={{
@@ -408,7 +424,13 @@ const ReportView = ({ data, onReset }) => {
           </div>
         </>
       ) : (
-        <div style={{ marginTop: '0.5rem' }}><Chatbot /></div>
+        <div style={{ marginTop: '0.5rem' }}>
+          <Chatbot
+            messages={chatMessages}
+            setMessages={setChatMessages}
+            conversationId={conversationId}
+          />
+        </div>
       )}
     </div>
   );

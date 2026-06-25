@@ -36,6 +36,10 @@ const Uploader = ({ label, onFileChange, disabled, iconColor }) => {
     onFileChange?.(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
+  const handlePreview = (e) => {
+    e.stopPropagation();
+    if (selectedFile) window.open(URL.createObjectURL(selectedFile), '_blank', 'noopener');
+  };
 
   const formatSize = (bytes) => {
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -67,10 +71,12 @@ const Uploader = ({ label, onFileChange, disabled, iconColor }) => {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={() => !disabled && fileInputRef.current?.click()}
+          onMouseEnter={e => { if (!disabled && !isDragging) { e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.background = 'var(--bg-elevated)'; } }}
+          onMouseLeave={e => { if (!disabled && !isDragging) { e.currentTarget.style.borderColor = 'var(--border-hairline)'; e.currentTarget.style.background = 'var(--bg-panel)'; } }}
           style={{
             position: 'relative',
-            border: `1px solid ${disabled ? 'var(--border-hairline)' : isDragging ? accentColor : 'var(--border-hairline)'}`,
-            borderRadius: 'var(--radius-sm)',
+            border: `1.5px dashed ${disabled ? 'var(--border-hairline)' : isDragging ? accentColor : 'var(--border-strong)'}`,
+            borderRadius: 'var(--radius-md)',
             padding: '2.5rem 2rem',
             display: 'flex',
             flexDirection: 'column',
@@ -209,6 +215,7 @@ const Uploader = ({ label, onFileChange, disabled, iconColor }) => {
             <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
               <button
                 title="Xem tệp"
+                onClick={handlePreview}
                 style={{
                   width: 28, height: 28,
                   border: '1px solid var(--border-hairline)',

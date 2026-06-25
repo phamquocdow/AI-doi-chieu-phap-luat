@@ -10,7 +10,7 @@ export default function DocumentPaperView({ pdfUrlA, pdfUrlB, details, highlight
           details={details}
           side="a"
           label="Bản 1"
-          accentColor="gray"
+          accentColor="#475569"
           highlightEnabled={highlightEnabled}
         />
         <PdfJsViewer
@@ -18,7 +18,7 @@ export default function DocumentPaperView({ pdfUrlA, pdfUrlB, details, highlight
           details={details}
           side="b"
           label="Bản 2"
-          accentColor="gray"
+          accentColor="#475569"
           highlightEnabled={highlightEnabled}
         />
       </div>

@@ -42,10 +42,7 @@ const renderMarkdown = (text) => {
   });
 };
 
-const Chatbot = () => {
-  const [messages, setMessages] = useState([
-    { role: 'ai', content: 'Xin chào! Tôi là trợ lý pháp lý AI. Bạn có thắc mắc gì về những điểm thay đổi trong tài liệu này không?' }
-  ]);
+const Chatbot = ({ messages, setMessages, conversationId }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -73,7 +70,7 @@ const Chatbot = () => {
       const response = await fetch('http://localhost:8000/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ message: userMessage, conversation_id: conversationId }),
       });
       if (!response.ok) throw new Error('Lỗi từ server');
       const reader = response.body.getReader();
@@ -106,7 +103,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div style={{
+    <div className="lc-chat" style={{
       fontFamily: 'inherit',
       background: 'var(--bg-panel)',
       border: '1px solid var(--border-hairline)',
@@ -114,7 +111,8 @@ const Chatbot = () => {
       flexDirection: 'column',
       height: 600,
       overflow: 'hidden',
-      borderRadius: 'var(--radius-md)',
+      borderRadius: 'var(--radius-lg)',
+      boxShadow: 'var(--shadow-md)',
     }}>
 
       {/* ── Top bar ── */}
@@ -163,11 +161,12 @@ const Chatbot = () => {
             {msg.role === 'ai' ? (
               <div style={{
                 width: 28, height: 28, flexShrink: 0,
-                background: 'var(--accent-blue)', display: 'flex',
+                background: 'var(--accent-grad)', display: 'flex',
                 alignItems: 'center', justifyContent: 'center',
                 fontSize: '0.6rem', fontWeight: 700, color: '#fff',
                 letterSpacing: '0.05em', marginTop: '2px',
-                borderRadius: 'var(--radius-sm)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: '0 3px 8px rgba(29,99,237,0.3)',
               }}>LAW</div>
             ) : (
               <div style={{
@@ -248,17 +247,17 @@ const Chatbot = () => {
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
             style={{
-              width: 32, height: 32, border: 'none', flexShrink: 0,
+              width: 34, height: 34, flexShrink: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
-              background: input.trim() && !isLoading ? 'var(--accent-blue)' : 'var(--bg-panel)',
+              background: input.trim() && !isLoading ? 'var(--accent-grad)' : 'var(--bg-panel)',
               border: input.trim() && !isLoading ? 'none' : '1px solid var(--border-hairline)',
-              color: input.trim() && !isLoading ? '#fff' : 'var(--text-muted)',
-              transition: 'all 0.2s',
-              borderRadius: 'var(--radius-sm)',
+              color: input.trim() && !isLoading ? '#fff' : 'var(--text-faint)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: input.trim() && !isLoading ? '0 4px 12px rgba(29,99,237,0.3)' : 'none',
             }}
-            onMouseEnter={e => { if (input.trim() && !isLoading) e.currentTarget.style.background = 'var(--accent-blue-hover)'; }}
-            onMouseLeave={e => { if (input.trim() && !isLoading) e.currentTarget.style.background = 'var(--accent-blue)'; }}
+            onMouseEnter={e => { if (input.trim() && !isLoading) e.currentTarget.style.filter = 'brightness(1.08)'; }}
+            onMouseLeave={e => { if (input.trim() && !isLoading) e.currentTarget.style.filter = 'none'; }}
           >
             <ArrowUp size={16} strokeWidth={2} />
           </button>
@@ -276,10 +275,10 @@ const Chatbot = () => {
           0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
           40% { transform: translateY(-5px); opacity: 1; }
         }
-        textarea::placeholder { color: var(--text-muted); }
-        div::-webkit-scrollbar { width: 4px; }
-        div::-webkit-scrollbar-thumb { background: var(--border-hairline); border-radius: var(--radius-sm); }
-        div::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        .lc-chat textarea::placeholder { color: var(--text-muted); }
+        .lc-chat div::-webkit-scrollbar { width: 4px; }
+        .lc-chat div::-webkit-scrollbar-thumb { background: var(--border-hairline); border-radius: var(--radius-sm); }
+        .lc-chat div::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
       `}</style>
     </div>
   );
